@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom scrollbar for modal */
+.modal-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+.modal-scrollbar::-webkit-scrollbar-track {
+  background: #f1f5f9; /* bg-slate-100 */
+}
+.modal-scrollbar::-webkit-scrollbar-thumb {
+  background: #94a3b8; /* bg-slate-400 */
+  border-radius: 4px;
+}
+.modal-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #64748b; /* bg-slate-500 */
+}
