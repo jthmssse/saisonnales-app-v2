@@ -1,0 +1,35 @@
+import React from 'react';
+import { Search, Bell, Plus } from 'lucide-react';
+
+interface HeaderProps {
+    onNewReservationClick: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ onNewReservationClick }) => {
+  return (
+    <header className="bg-white shadow-sm border-b sticky top-0 z-40">
+      <div className="flex items-center justify-end p-4 h-[69px] max-w-screen-2xl mx-auto px-6">
+        <div className="flex items-center space-x-2 sm:space-x-4">
+          <div className="relative">
+            <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
+            <input
+              type="text"
+              placeholder="Rechercher un résident..."
+              className="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 w-40 sm:w-64 bg-white"
+            />
+          </div>
+          <button className="p-2 hover:bg-gray-100 rounded-full relative">
+            <Bell className="w-6 h-6 text-gray-500" />
+            <span className="absolute top-2 right-2 block h-1.5 w-1.5 rounded-full bg-red-500 ring-1 ring-white"></span>
+          </button>
+          <button onClick={onNewReservationClick} className="bg-emerald-500 text-white px-3 py-2 rounded-lg hover:bg-emerald-600 flex items-center space-x-2 transition-colors">
+            <Plus className="w-5 h-5" />
+            <span className="font-medium">Nouvelle Réservation</span>
+          </button>
+        </div>
+      </div>
+    </header>
+  );
+};
+
+export default Header;
