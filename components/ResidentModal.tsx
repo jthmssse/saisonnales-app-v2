@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Phone, User, Stethoscope, HeartPulse, FileText, Mail, Paperclip, Plus, Download, Trash2 } from 'lucide-react';
+import { X, Phone, User, Stethoscope, HeartPulse, FileText, Paperclip, Plus, Download, Trash2 } from 'lucide-react';
 import { Resident } from '../types';
 import DocumentFileIcon from './DocumentFileIcon.tsx';
 import DetailCard from './DetailCard.tsx';
@@ -9,6 +9,7 @@ import HistoryItem from './HistoryItem.tsx';
 import AllergyAlert from './AllergyAlert.tsx';
 import ContactValue from './ContactValue.tsx';
 import StatusBadge from './StatusBadge.tsx';
+import EmailValue from './EmailValue.tsx';
 
 interface ResidentModalProps {
   resident: Resident;
@@ -84,14 +85,7 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose }) => {
                 value={<ContactValue name={resident.familyContactName} phone={resident.phone} />} 
              />
              {resident.email && (
-                <DetailItem label="Email" value={
-                    <div className="flex items-center justify-end gap-2">
-                        <span>{resident.email}</span>
-                        <a href={`mailto:${resident.email}`} className="text-blue-600 hover:text-blue-800 p-1 hover:bg-blue-100 rounded-full transition-colors">
-                            <Mail size={16} />
-                        </a>
-                    </div>
-                } />
+                <DetailItem label="Email" value={<EmailValue email={resident.email} />} />
              )}
           </DetailCard>
 
