@@ -8,6 +8,7 @@ import InfoRow from './InfoRow.tsx';
 import HistoryItem from './HistoryItem.tsx';
 import AllergyAlert from './AllergyAlert.tsx';
 import ContactValue from './ContactValue.tsx';
+import StatusBadge from './StatusBadge.tsx';
 
 interface ResidentModalProps {
   resident: Resident;
@@ -66,8 +67,14 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose }) => {
 
           {/* Admin */}
           <DetailCard icon={FileText} title="Dossier Administratif">
-             <DetailItem label="Devis" value={<span className={`font-semibold ${resident.devisEnvoye ? 'text-green-600' : 'text-gray-500'}`}>{resident.devisEnvoye ? 'Envoyé' : 'Non envoyé'}</span>} />
-             <DetailItem label="Pièces justificatives" value={<span className={`font-semibold ${resident.docsComplete ? 'text-green-600' : 'text-red-600'}`}>{resident.docsComplete ? 'Complet' : 'Incomplet'}</span>} />
+             <DetailItem 
+                label="Devis" 
+                value={<StatusBadge isPositive={resident.devisEnvoye} positiveText="Envoyé" negativeText="Non envoyé" />} 
+             />
+             <DetailItem 
+                label="Pièces justificatives" 
+                value={<StatusBadge isPositive={resident.docsComplete} positiveText="Complet" negativeText="Incomplet" negativeColor="red" />} 
+             />
           </DetailCard>
           
            {/* Contact */}
@@ -135,10 +142,13 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose }) => {
 
         <div className="sticky bottom-0 bg-gray-50/80 backdrop-blur-sm p-4 border-t mt-auto">
           <div className="flex justify-end">
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center space-x-2 transition-colors">
+            <a 
+              href={`tel:${resident.phone}`}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center space-x-2 transition-colors"
+            >
               <Phone className="w-4 h-4" />
               <span>Contacter la famille</span>
-            </button>
+            </a>
           </div>
         </div>
       </div>
