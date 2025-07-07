@@ -2,10 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import { X, User, Calendar, Stethoscope, HeartPulse, Phone, FileText, Plus } from 'lucide-react';
 import { NewReservationData } from '../types';
-import FormInput from './FormInput.tsx';
-import FormTextArea from './FormTextArea.tsx';
-import FormSelect from './FormSelect.tsx';
-import Section from './Section.tsx';
+import FormInput from './FormInput';
+import FormTextArea from './FormTextArea';
+import FormSelect from './FormSelect';
+import Section from './Section';
 
 interface NewReservationModalProps {
   onClose: () => void;
