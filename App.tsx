@@ -13,26 +13,37 @@ const CURRENT_USER_NAME = "Jean-Michel";
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
-  // Initialise l'état des résidents à partir du localStorage, ou des constantes si le localStorage est vide.
-  const [residents, setResidents] = useState<Resident[]>(() => {
-    try {
-      const localData = localStorage.getItem('saisonnales-residents');
-      return localData ? JSON.parse(localData) : RESIDENTS;
-    } catch (error) {
-      console.error("Impossible de lire les données des résidents depuis le localStorage", error);
-      return RESIDENTS;
-    }
-  });
+  // On initialise avec un tableau vide pour éviter d'écraser le localStorage avec les données par défaut au premier rendu.
+  const [residents, setResidents] = useState<Resident[]>([]);
   const [selectedResident, setSelectedResident] = useState<Resident | null>(null);
   const [isNewReservationModalOpen, setNewReservationModalOpen] = useState(false);
   const [search, setSearch] = useState("");
 
-  // Sauvegarde les résidents dans le localStorage à chaque modification
+  // Charge les données depuis le localStorage une seule fois au montage du composant (côté client)
   useEffect(() => {
     try {
-      localStorage.setItem('saisonnales-residents', JSON.stringify(residents));
+      const localData = localStorage.getItem('saisonnales-residents');
+      // Si des données existent dans le localStorage, on les utilise. Sinon, on charge les données par défaut.
+      if (localData) {
+        setResidents(JSON.parse(localData));
+      } else {
+        setResidents(RESIDENTS);
+      }
     } catch (error) {
-      console.error("Impossible de sauvegarder les résidents dans le localStorage", error);
+      console.error("Impossible de charger les résidents depuis le localStorage", error);
+      setResidents(RESIDENTS); // En cas d'erreur, on revient aux données par défaut.
+    }
+  }, []); // Le tableau de dépendances vide assure que cela ne s'exécute qu'une fois.
+
+  // Sauvegarde les résidents dans le localStorage à chaque modification
+  useEffect(() => {
+    // On ne sauvegarde que si la liste des résidents n'est pas vide (pour éviter d'écraser les données au montage initial)
+    if (residents.length > 0) {
+      try {
+        localStorage.setItem('saisonnales-residents', JSON.stringify(residents));
+      } catch (error) {
+        console.error("Impossible de sauvegarder les résidents dans le localStorage", error);
+      }
     }
   }, [residents]);
 
