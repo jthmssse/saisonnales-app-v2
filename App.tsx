@@ -39,6 +39,25 @@ const App: React.FC = () => {
       setNewReservationModalOpen(false);
   }, [residents]);
 
+  // Génère la structure attendue par PlanningCalendar à partir des residents
+  const planningData = React.useMemo(() => {
+    // Regroupe les résidents par chambre
+    const rooms = new Map<string, { roomName: string, stays: any[] }>();
+    residents.forEach(resident => {
+      if (!resident.room) return;
+      if (!rooms.has(resident.room)) {
+        rooms.set(resident.room, { roomName: resident.room, stays: [] });
+      }
+      rooms.get(resident.room)!.stays.push({
+        id: resident.id,
+        residentId: resident.id,
+        start: resident.arrival,
+        end: resident.departure,
+      });
+    });
+    return Array.from(rooms.values());
+  }, [residents]);
+
   const renderContent = () => {
     switch (activeTab) {
       case 'communications':
@@ -47,7 +66,7 @@ const App: React.FC = () => {
         return <ResidentsView onSelectResident={setSelectedResident} residents={residents} />;
       case 'dashboard':
       default:
-        return <Dashboard onSelectResident={handleSelectResidentById} residents={residents} />;
+        return <Dashboard onSelectResident={handleSelectResidentById} residents={residents} planningData={planningData} />;
     }
   };
 

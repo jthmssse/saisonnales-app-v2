@@ -9,11 +9,12 @@ import OccupancyCard from './OccupancyCard.tsx';
 interface DashboardProps {
     onSelectResident: (residentId: number) => void;
     residents: Resident[];
+    planningData: any[]; // adapte le type si tu veux
 }
 
 const PRESTATAIRES_EMAIL = "prestataires@example.com";
 
-export default function Dashboard({ onSelectResident, residents }: DashboardProps) {
+export default function Dashboard({ onSelectResident, residents, planningData }: DashboardProps) {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
@@ -48,7 +49,7 @@ export default function Dashboard({ onSelectResident, residents }: DashboardProp
         </div>
       </div>
 
-      <PlanningCalendar planningData={PLANNING_DATA} onSelectResident={onSelectResident} residents={residents} />
+      <PlanningCalendar planningData={planningData} onSelectResident={onSelectResident} residents={residents} />
     </div>
   );
 }
