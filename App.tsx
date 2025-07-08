@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { ActiveTab, Resident, NewReservationData } from './types';
 import { RESIDENTS } from './constants';
 import Header from './components/Header.tsx';
@@ -13,10 +13,28 @@ const CURRENT_USER_NAME = "Jean-Michel";
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
-  const [residents, setResidents] = useState<Resident[]>(RESIDENTS);
+  // Initialise l'état des résidents à partir du localStorage, ou des constantes si le localStorage est vide.
+  const [residents, setResidents] = useState<Resident[]>(() => {
+    try {
+      const localData = localStorage.getItem('saisonnales-residents');
+      return localData ? JSON.parse(localData) : RESIDENTS;
+    } catch (error) {
+      console.error("Impossible de lire les données des résidents depuis le localStorage", error);
+      return RESIDENTS;
+    }
+  });
   const [selectedResident, setSelectedResident] = useState<Resident | null>(null);
   const [isNewReservationModalOpen, setNewReservationModalOpen] = useState(false);
   const [search, setSearch] = useState("");
+
+  // Sauvegarde les résidents dans le localStorage à chaque modification
+  useEffect(() => {
+    try {
+      localStorage.setItem('saisonnales-residents', JSON.stringify(residents));
+    } catch (error) {
+      console.error("Impossible de sauvegarder les résidents dans le localStorage", error);
+    }
+  }, [residents]);
 
   const handleSelectResidentById = useCallback((residentId: number | null) => {
     if (residentId === null) {
