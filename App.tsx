@@ -39,9 +39,8 @@ const App: React.FC = () => {
       setNewReservationModalOpen(false);
   }, [residents]);
 
-  // Génère la structure attendue par PlanningCalendar à partir des residents
+  // Génère la structure attendue par PlanningCalendar à partir des residents, triée par nom de chambre
   const planningData = React.useMemo(() => {
-    // Regroupe les résidents par chambre
     const rooms = new Map<string, { roomName: string, stays: any[] }>();
     residents.forEach(resident => {
       if (!resident.room) return;
@@ -55,7 +54,8 @@ const App: React.FC = () => {
         end: resident.departure,
       });
     });
-    return Array.from(rooms.values());
+    // Trie les chambres par ordre croissant (numérique ou alphabétique)
+    return Array.from(rooms.values()).sort((a, b) => a.roomName.localeCompare(b.roomName, 'fr', { numeric: true }));
   }, [residents]);
 
   const renderContent = () => {
