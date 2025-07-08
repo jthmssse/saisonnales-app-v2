@@ -14,10 +14,29 @@ interface NewReservationModalProps {
 
 const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSave }) => {
     const [formData, setFormData] = useState<NewReservationData>({
-        name: '', room: '', gir: '', arrival: '', departure: '', phone: '',
-        docsComplete: false, devisEnvoye: false, familyContactName: '', email: '',
-        allergies: '', medicalHistory: '', treatingDoctor: '', mobility: 'Autonome',
-        dietaryNeeds: '', socialHabits: ''
+        name: '',
+        room: '',
+        gir: '',
+        arrival: '',
+        departure: '',
+        phone: '',
+        docsComplete: false,
+        devisEnvoye: false,
+        familyContactName: '',
+        email: '',
+        allergies: '',
+        medicalHistory: '',
+        treatingDoctor: '',
+        mobility: 'Autonome',
+        dietaryNeeds: '',
+        socialHabits: '',
+        // Ajout des valeurs par défaut pour les champs optionnels pour éviter undefined
+        gender: '',
+        birthDate: '',
+        address: '',
+        familyContactRelation: '',
+        notes: '',
+        documents: [],
     });
     const [errors, setErrors] = useState<Partial<Record<keyof NewReservationData, string>>>({});
 
@@ -81,8 +100,8 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
                 <div className="p-4 sm:p-5 space-y-4 overflow-y-auto modal-scrollbar">
                     <Section icon={User} title="Informations Résident">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">                           
-                            <FormInput label="Nom complet" name="name" value={formData.name} onChange={handleChange} placeholder="ex: Jean Dupont" isRequired error={errors.name} />
-                            <FormSelect label="GIR" name="gir" value={formData.gir} onChange={handleChange} isRequired error={errors.gir}>
+                            <FormInput label="Nom complet" name="name" value={formData.name || ''} onChange={handleChange} placeholder="ex: Jean Dupont" isRequired error={errors.name} />
+                            <FormSelect label="GIR" name="gir" value={formData.gir || ''} onChange={handleChange} isRequired error={errors.gir}>
                                 <option value="">Sélectionner...</option>
                                 {/* Génère dynamiquement les options pour les GIR de 1 à 6 */}
                                 {Array.from({ length: 6 }, (_, i) => i + 1).map(g => (
@@ -94,40 +113,40 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
 
                     <Section icon={Calendar} title="Détails du Séjour">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                             <FormInput label="Date d'arrivée" name="arrival" value={formData.arrival} onChange={handleChange} type="date" isRequired error={errors.arrival} />
-                             <FormInput label="Date de départ" name="departure" value={formData.departure} onChange={handleChange} type="date" isRequired error={errors.departure} />
-                             <FormInput label="Chambre" name="room" value={formData.room} onChange={handleChange} placeholder="ex: 12" isRequired error={errors.room} />
+                             <FormInput label="Date d'arrivée" name="arrival" value={formData.arrival || ''} onChange={handleChange} type="date" isRequired error={errors.arrival} />
+                             <FormInput label="Date de départ" name="departure" value={formData.departure || ''} onChange={handleChange} type="date" isRequired error={errors.departure} />
+                             <FormInput label="Chambre" name="room" value={formData.room || ''} onChange={handleChange} placeholder="ex: 12" isRequired error={errors.room} />
                         </div>
                     </Section>
 
                     <Section icon={Stethoscope} title="Informations Médicales">
                         <div className="space-y-4">
-                           <FormTextArea label="Allergies et contre-indications" name="allergies" value={formData.allergies} onChange={handleChange} placeholder="ex: Pénicilline, arachides. Indiquer 'Aucune' si pertinent." rows={2} />
-                           <FormTextArea label="Antécédents médicaux importants" name="medicalHistory" value={formData.medicalHistory} onChange={handleChange} placeholder="ex: Diabète, hypertension, prothèse de hanche..." rows={2}/>
-                           <FormInput label="Médecin traitant" name="treatingDoctor" value={formData.treatingDoctor} onChange={handleChange} placeholder="ex: Dr. Martin"/>
+                           <FormTextArea label="Allergies et contre-indications" name="allergies" value={formData.allergies || ''} onChange={handleChange} placeholder="ex: Pénicilline, arachides. Indiquer 'Aucune' si pertinent." rows={2} />
+                           <FormTextArea label="Antécédents médicaux importants" name="medicalHistory" value={formData.medicalHistory || ''} onChange={handleChange} placeholder="ex: Diabète, hypertension, prothèse de hanche..." rows={2}/>
+                           <FormInput label="Médecin traitant" name="treatingDoctor" value={formData.treatingDoctor || ''} onChange={handleChange} placeholder="ex: Dr. Martin"/>
                         </div>
                     </Section>
 
                     <Section icon={HeartPulse} title="Habitudes de Vie">
                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                           <FormSelect label="Mobilité" name="mobility" value={formData.mobility} onChange={handleChange}>
+                           <FormSelect label="Mobilité" name="mobility" value={formData.mobility || ''} onChange={handleChange}>
                                 <option value="Autonome">Autonome</option>
                                 <option value="Canne">Marche avec une canne</option>
                                 <option value="Déambulateur">Marche avec un déambulateur</option>
                                 <option value="Fauteuil roulant">En fauteuil roulant</option>
                            </FormSelect>
-                           <FormTextArea label="Régime et habitudes alimentaires" name="dietaryNeeds" value={formData.dietaryNeeds} onChange={handleChange} placeholder="ex: Texture mixée, régime sans sel, aime la soupe le soir..." />
+                           <FormTextArea label="Régime et habitudes alimentaires" name="dietaryNeeds" value={formData.dietaryNeeds || ''} onChange={handleChange} placeholder="ex: Texture mixée, régime sans sel, aime la soupe le soir..." />
                            <div className="md:col-span-2">
-                               <FormTextArea label="Habitudes sociales et notes diverses" name="socialHabits" value={formData.socialHabits} onChange={handleChange} placeholder="ex: Aime les jeux de société, fait la sieste à 14h..." />
+                               <FormTextArea label="Habitudes sociales et notes diverses" name="socialHabits" value={formData.socialHabits || ''} onChange={handleChange} placeholder="ex: Aime les jeux de société, fait la sieste à 14h..." />
                            </div>
                         </div>
                     </Section>
 
                     <Section icon={Phone} title="Contact Principal (Famille/Proche)">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                           <FormInput label="Nom du contact" name="familyContactName" value={formData.familyContactName} onChange={handleChange} placeholder="ex: Martine Dupont"/>
-                           <FormInput label="Téléphone" name="phone" value={formData.phone} onChange={handleChange} placeholder="ex: 0612345678" />
-                           <FormInput label="Email" name="email" value={formData.email} onChange={handleChange} placeholder="ex: contact@famille.fr" type="email" />
+                           <FormInput label="Nom du contact" name="familyContactName" value={formData.familyContactName || ''} onChange={handleChange} placeholder="ex: Martine Dupont"/>
+                           <FormInput label="Téléphone" name="phone" value={formData.phone || ''} onChange={handleChange} placeholder="ex: 0612345678" />
+                           <FormInput label="Email" name="email" value={formData.email || ''} onChange={handleChange} placeholder="ex: contact@famille.fr" type="email" />
                         </div>
                     </Section>
 
