@@ -39,23 +39,25 @@ const App: React.FC = () => {
       setNewReservationModalOpen(false);
   }, [residents]);
 
-  // Génère la structure attendue par PlanningCalendar à partir des residents, triée par nom de chambre
+  // Génère la structure attendue par PlanningCalendar : 24 chambres fixes, séjours dynamiques
   const planningData = React.useMemo(() => {
-    const rooms = new Map<string, { roomName: string, stays: any[] }>();
+    // Génère 24 chambres (Chambre 1 à Chambre 24)
+    const rooms = Array.from({ length: 24 }, (_, i) => ({
+      roomName: `Chambre ${i + 1}`,
+      stays: [] as any[],
+    }));
     residents.forEach(resident => {
-      if (!resident.room) return;
-      if (!rooms.has(resident.room)) {
-        rooms.set(resident.room, { roomName: resident.room, stays: [] });
+      const roomNumber = parseInt(resident.room, 10);
+      if (!isNaN(roomNumber) && roomNumber > 0 && roomNumber <= 24) {
+        rooms[roomNumber - 1].stays.push({
+          id: resident.id,
+          residentId: resident.id,
+          start: resident.arrival,
+          end: resident.departure,
+        });
       }
-      rooms.get(resident.room)!.stays.push({
-        id: resident.id,
-        residentId: resident.id,
-        start: resident.arrival,
-        end: resident.departure,
-      });
     });
-    // Trie les chambres par ordre croissant (numérique ou alphabétique)
-    return Array.from(rooms.values()).sort((a, b) => a.roomName.localeCompare(b.roomName, 'fr', { numeric: true }));
+    return rooms;
   }, [residents]);
 
   const renderContent = () => {
