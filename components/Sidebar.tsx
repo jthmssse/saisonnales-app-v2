@@ -21,9 +21,9 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
             <div className="w-10 h-10 bg-yellow-400 rounded-lg flex items-center justify-center overflow-hidden">
                 {/* Remplacez le chemin ci-dessous par votre logo personnalisé (placer logo.png dans le dossier public ou assets) */}
                 <img
-                  src="/assets/logo.png"
+                  src="/assets/logo.jpg"
                   alt="Logo Les Saisonnales"
-                  className="w-9 h-9 object-contain"
+                  className="w-9 h-9 object-cover"
                 />
             </div>
             <div>
