@@ -75,6 +75,13 @@ const App: React.FC = () => {
     setSelectedResident(updated); // pour garder la fiche à jour
   }, []);
 
+  const handleDeleteResident = useCallback((residentId: number) => {
+    // On met à jour la liste des résidents en filtrant celui à supprimer
+    setResidents(prev => prev.filter(r => r.id !== residentId));
+    // On ferme la modale
+    setSelectedResident(null);
+  }, []);
+
   // Génère la structure attendue par PlanningCalendar : 24 chambres fixes, séjours dynamiques
   const planningData = React.useMemo(() => {
     // Génère 24 chambres (Chambre 1 à Chambre 24)
@@ -144,6 +151,7 @@ const App: React.FC = () => {
           resident={selectedResident}
           onClose={() => setSelectedResident(null)}
           onUpdateResident={handleUpdateResident}
+          onDeleteResident={handleDeleteResident}
         />
       )}
       

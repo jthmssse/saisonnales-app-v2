@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { X, User, Calendar, Stethoscope, HeartPulse, Phone, FileText, Plus } from 'lucide-react';
-import { NewReservationData } from '../types';
+import { NewReservationData, Resident } from '../types';
 import FormInput from './FormInput';
 import FormTextArea from './FormTextArea';
 import FormSelect from './FormSelect';
@@ -10,9 +10,10 @@ import Section from './Section';
 interface NewReservationModalProps {
   onClose: () => void;
   onSave: (data: NewReservationData) => void;
+  residents: Resident[];
 }
 
-const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSave }) => {
+const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSave, residents }) => {
     const [formData, setFormData] = useState<NewReservationData>({
         name: '',
         room: '',
@@ -39,6 +40,42 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
         documents: [],
     });
     const [errors, setErrors] = useState<Partial<Record<keyof NewReservationData, string>>>({});
+
+    const availableRooms = useMemo(() => {
+        const totalRooms = Array.from({ length: 24 }, (_, i) => String(i + 1));
+        
+        if (!formData.arrival || !formData.departure) {
+            // Si les dates ne sont pas définies, on retourne toutes les chambres.
+            return totalRooms;
+        }
+
+        try {
+            const newArrival = new Date(formData.arrival);
+            const newDeparture = new Date(formData.departure);
+
+            // Si la plage de dates est invalide, aucune chambre n'est disponible.
+            if (newArrival >= newDeparture) {
+                return [];
+            }
+
+            const occupiedRooms = new Set<string>();
+
+            residents.forEach(resident => {
+                if (resident.room && resident.arrival && resident.departure) {
+                    const residentArrival = new Date(resident.arrival);
+                    const residentDeparture = new Date(resident.departure);
+                    // Vérifie si les séjours se chevauchent
+                    if (residentArrival < newDeparture && residentDeparture > newArrival) {
+                        occupiedRooms.add(resident.room);
+                    }
+                }
+            });
+            return totalRooms.filter(room => !occupiedRooms.has(room));
+        } catch (e) { 
+            // En cas d'erreur de date, on retourne un tableau vide pour la sécurité
+            return []; 
+        }
+    }, [formData.arrival, formData.departure, residents]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement >) => {
         const { name, value, type } = e.target;
@@ -115,7 +152,16 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                              <FormInput label="Date d'arrivée" name="arrival" value={formData.arrival || ''} onChange={handleChange} type="date" isRequired error={errors.arrival} />
                              <FormInput label="Date de départ" name="departure" value={formData.departure || ''} onChange={handleChange} type="date" isRequired error={errors.departure} />
-                             <FormInput label="Chambre" name="room" value={formData.room || ''} onChange={handleChange} placeholder="ex: 12" isRequired error={errors.room} />
+                            <FormSelect label="Chambre" name="room" value={formData.room || ''} onChange={handleChange} isRequired error={errors.room}>
+                                <option value="">Sélectionner...</option>
+                                {availableRooms.length > 0 ? (
+                                    availableRooms.map(roomNumber => (
+                                        <option key={roomNumber} value={roomNumber}>Chambre {roomNumber}</option>
+                                    ))
+                                ) : (
+                                    <option value="" disabled>Aucune chambre disponible</option>
+                                )}
+                            </FormSelect>
                         </div>
                     </Section>
 
@@ -180,4 +226,3 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
 };
 
 export default NewReservationModal;
-

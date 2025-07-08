@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Phone, User, Stethoscope, HeartPulse, FileText } from 'lucide-react';
+import { X, Phone, User, Stethoscope, HeartPulse, FileText, Trash2 } from 'lucide-react';
 import { Resident } from '../types';
 import DetailCard from './DetailCard.tsx';
 import DetailItem from './DetailItem.tsx';
@@ -16,6 +16,7 @@ interface ResidentModalProps {
   resident: Resident;
   onClose: () => void;
   onUpdateResident: (resident: Resident) => void;
+  onDeleteResident: (residentId: number) => void;
 }
 
 // Helper function moved outside the component for better performance and to fix syntax errors.
@@ -25,7 +26,7 @@ const formatDate = (dateString: string | undefined) => {
     return `${day}/${month}/${year}`;
 };
 
-const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpdateResident }) => {
+const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpdateResident, onDeleteResident }) => {
   const [editRoom, setEditRoom] = React.useState(resident.room);
   const [documents, setDocuments] = React.useState(resident.documents || []);
 
@@ -53,6 +54,12 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
   const handleRoomChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setEditRoom(e.target.value);
     onUpdateResident({ ...resident, room: e.target.value });
+  };
+
+  const handleDelete = () => {
+    if (window.confirm(`Êtes-vous sûr de vouloir supprimer le résident ${resident.name} ? Cette action est irréversible.`)) {
+      onDeleteResident(resident.id);
+    }
   };
 
   return (
@@ -170,7 +177,14 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
         </div>
 
         <div className="sticky bottom-0 bg-gray-50/80 backdrop-blur-sm p-4 border-t mt-auto">
-          <div className="flex justify-end">
+          <div className="flex justify-between items-center">
+            <button
+              onClick={handleDelete}
+              className="bg-red-50 text-red-700 px-4 py-2 rounded-lg hover:bg-red-100 flex items-center space-x-2 transition-colors text-sm font-medium"
+            >
+              <Trash2 className="w-4 h-4" />
+              <span>Supprimer le résident</span>
+            </button>
             <a 
               href={`tel:${resident.phone}`}
               className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center space-x-2 transition-colors"
