@@ -18,8 +18,13 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
     <nav className="w-64 bg-white shadow-sm border-r h-screen sticky top-0 flex flex-col justify-between">
       <div>
         <div className="p-4 flex items-center space-x-3 border-b h-[69px]">
-            <div className="w-10 h-10 bg-yellow-400 rounded-lg flex items-center justify-center text-2xl">
-                <span>🏡</span>
+            <div className="w-10 h-10 bg-yellow-400 rounded-lg flex items-center justify-center overflow-hidden">
+                {/* Remplacez le chemin ci-dessous par votre logo personnalisé (placer logo.png dans le dossier public ou assets) */}
+                <img
+                  src="/assets/logo.png"
+                  alt="Logo Les Saisonnales"
+                  className="w-9 h-9 object-contain"
+                />
             </div>
             <div>
                 <h1 className="text-md font-bold text-gray-800">Les Saisonnales</h1>

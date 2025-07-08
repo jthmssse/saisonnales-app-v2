@@ -71,19 +71,21 @@ const App: React.FC = () => {
     switch (activeTab) {
       case 'communications':
         return <CommunicationsView />;
-      case 'residents': {
-        // Filtrage côté App pour synchroniser avec la barre de recherche globale
+      case 'residents':
+        return <ResidentsView onSelectResident={setSelectedResident} residents={residents} />;
+      case 'dashboard':
+        return <Dashboard onSelectResident={handleSelectResidentById} residents={residents} planningData={planningData} />;
+      case 'planning':
+      default: {
+        // Recherche globale active uniquement sur planning
         const s = search.trim().toLowerCase();
         const filteredResidents = !s ? residents : residents.filter(r =>
           r.name.toLowerCase().includes(s) ||
           (r.room && r.room.toLowerCase().includes(s)) ||
           (r.familyContactName && r.familyContactName.toLowerCase().includes(s))
         );
-        return <ResidentsView onSelectResident={setSelectedResident} residents={filteredResidents} />;
+        return <PlanningCalendar planningData={planningData} residents={filteredResidents} onSelectResident={handleSelectResidentById} />;
       }
-      case 'dashboard':
-      default:
-        return <Dashboard onSelectResident={handleSelectResidentById} residents={residents} planningData={planningData} />;
     }
   };
 
@@ -91,8 +93,8 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-gray-50 text-gray-800">
       <Header
         onNewReservationClick={() => setNewReservationModalOpen(true)}
-        search={search}
-        onSearchChange={setSearch}
+        search={activeTab === 'planning' ? search : ''}
+        onSearchChange={activeTab === 'planning' ? setSearch : () => {}}
       />
       <div className="flex">
         <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
