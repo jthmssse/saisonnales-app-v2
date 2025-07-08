@@ -15,6 +15,7 @@ import EmailValue from './EmailValue.tsx';
 interface ResidentModalProps {
   resident: Resident;
   onClose: () => void;
+  onUpdateResident: (resident: Resident) => void;
 }
 
 // Helper function moved outside the component for better performance and to fix syntax errors.
@@ -24,8 +25,31 @@ const formatDate = (dateString: string | undefined) => {
     return `${day}/${month}/${year}`;
 };
 
-const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose }) => {
-  return (
+const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpdateResident }) => {
+  const [editRoom, setEditRoom] = React.useState(resident.room);
+  const [documents, setDocuments] = React.useState(resident.documents || []);
+
+  // Ajout de pièce jointe
+  const handleAddDocument = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const newDoc = {
+      id: Date.now(),
+      name: file.name,
+      type: file.type.includes('pdf') ? 'pdf' : file.type.includes('word') ? 'word' : 'image',
+      size: `${(file.size / 1024 / 1024).toFixed(2)} MB`,
+      addedAt: new Date().toISOString().slice(0, 10),
+    };
+    const newDocs = [...documents, newDoc];
+    setDocuments(newDocs);
+    onUpdateResident({ ...resident, documents: newDocs });
+  };
+
+  // Changement de chambre
+  const handleRoomChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setEditRoom(e.target.value);
+    onUpdateResident({ ...resident, room: e.target.value });
+  };
     <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4" onClick={onClose}>
       <div
         className="bg-gray-50 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col"
@@ -43,12 +67,23 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose }) => {
         <div className="p-5 space-y-4 overflow-y-auto modal-scrollbar">
           {/* Main Info */}
           <div className="bg-white border rounded-lg p-4">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-6">
-                  <InfoRow label="Chambre" value={resident.room} />
-                  <InfoRow label="GIR" value={resident.gir} />
-                  <InfoRow label="Arrivée" value={formatDate(resident.arrival)} />
-                  <InfoRow label="Départ" value={formatDate(resident.departure)} />
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-6">
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Chambre</label>
+                <select
+                  className="w-full border rounded px-2 py-1 text-sm"
+                  value={editRoom}
+                  onChange={handleRoomChange}
+                >
+                  {Array.from({ length: 24 }, (_, i) => (
+                    <option key={i + 1} value={String(i + 1)}>{i + 1}</option>
+                  ))}
+                </select>
               </div>
+              <InfoRow label="GIR" value={resident.gir} />
+              <InfoRow label="Arrivée" value={formatDate(resident.arrival)} />
+              <InfoRow label="Départ" value={formatDate(resident.departure)} />
+          </div>
           </div>
 
           {/* Allergy Alert */}
@@ -91,7 +126,31 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose }) => {
           </DetailCard>
 
           {/* Documents */}
-          <DocumentSection documents={resident.documents} formatDate={formatDate} />
+          <div className="bg-white border rounded-lg p-4">
+            <div className="flex justify-between items-center mb-3">
+                <h3 className="font-semibold text-gray-800 text-base flex items-center gap-2">
+                    Documents
+                </h3>
+                <label className="flex items-center gap-1.5 text-sm bg-blue-50 text-blue-700 font-medium px-3 py-1.5 rounded-lg hover:bg-blue-100 transition-colors cursor-pointer">
+                    <span>Ajouter</span>
+                    <input type="file" className="hidden" onChange={handleAddDocument} />
+                </label>
+            </div>
+            <div className="space-y-2">
+                {(documents && documents.length > 0) ? (
+                    documents.map(doc => (
+                        <div key={doc.id} className="flex items-center justify-between p-2 rounded-md hover:bg-gray-50 transition-colors">
+                            <div className="flex items-center gap-3">
+                                <span className="font-medium text-sm text-gray-800">{doc.name}</span>
+                                <span className="text-xs text-gray-500">{doc.size}</span>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <p className="text-sm text-gray-500 text-center py-4">Aucun document ajouté.</p>
+                )}
+            </div>
+          </div>
 
           {/* History */}
           <div className="bg-white border rounded-lg p-4">

@@ -17,8 +17,21 @@ const PRESTATAIRES_EMAIL = "prestataires@example.com";
 export default function Dashboard({ onSelectResident, residents, planningData }: DashboardProps) {
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6">
         <OccupancyCard />
+        {/* GIR moyen */}
+        <StatCard 
+          icon={Clock} 
+          title="GIR moyen" 
+          content={<p className="text-2xl font-bold text-blue-600">{
+            (() => {
+              const girs = residents.map(r => parseInt((r.gir || '').replace(/\D/g, ''))).filter(n => !isNaN(n));
+              if (!girs.length) return 'N/A';
+              return (girs.reduce((a, b) => a + b, 0) / girs.length).toFixed(2);
+            })()
+          }</p>} 
+          color="blue" 
+        />
         <StatCard icon={Clock} title="Durée Moyenne Séjour" content={<p className="text-2xl font-bold text-green-600">21 jours</p>} color="green" />
         <StatCard icon={ArrowRight} title="Arrivées" content={<p className="text-2xl font-bold text-purple-600">0 <span className="text-sm font-normal text-gray-500">Cette semaine: 1</span></p>} color="purple" />
         <StatCard icon={ArrowLeft} title="Départs" content={<p className="text-2xl font-bold text-orange-600">0 <span className="text-sm font-normal text-gray-500">Cette semaine: 4</span></p>} color="orange" />

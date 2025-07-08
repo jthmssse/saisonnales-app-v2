@@ -39,6 +39,12 @@ const App: React.FC = () => {
       setNewReservationModalOpen(false);
   }, [residents]);
 
+  // Fonction pour mettre à jour un résident (ex: changement de chambre ou ajout de document)
+  const handleUpdateResident = useCallback((updated: Resident) => {
+    setResidents(prev => prev.map(r => r.id === updated.id ? { ...r, ...updated } : r));
+    setSelectedResident(updated); // pour garder la fiche à jour
+  }, []);
+
   // Génère la structure attendue par PlanningCalendar : 24 chambres fixes, séjours dynamiques
   const planningData = React.useMemo(() => {
     // Génère 24 chambres (Chambre 1 à Chambre 24)
@@ -90,6 +96,7 @@ const App: React.FC = () => {
         <ResidentModal
           resident={selectedResident}
           onClose={() => setSelectedResident(null)}
+          onUpdateResident={handleUpdateResident}
         />
       )}
       
