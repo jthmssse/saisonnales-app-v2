@@ -33,10 +33,14 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
   const handleAddDocument = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    // Correction du typage pour respecter "pdf" | "word" | "image"
+    let docType: 'pdf' | 'word' | 'image' = 'image';
+    if (file.type.includes('pdf')) docType = 'pdf';
+    else if (file.type.includes('word')) docType = 'word';
     const newDoc = {
       id: Date.now(),
       name: file.name,
-      type: file.type.includes('pdf') ? 'pdf' : file.type.includes('word') ? 'word' : 'image',
+      type: docType,
       size: `${(file.size / 1024 / 1024).toFixed(2)} MB`,
       addedAt: new Date().toISOString().slice(0, 10),
     };
@@ -50,6 +54,8 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
     setEditRoom(e.target.value);
     onUpdateResident({ ...resident, room: e.target.value });
   };
+
+  return (
     <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4" onClick={onClose}>
       <div
         className="bg-gray-50 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col"
@@ -63,11 +69,11 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
             </button>
           </div>
         </div>
-        
+
         <div className="p-5 space-y-4 overflow-y-auto modal-scrollbar">
           {/* Main Info */}
           <div className="bg-white border rounded-lg p-4">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-6">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-6">
               <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1">Chambre</label>
                 <select
@@ -83,7 +89,7 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
               <InfoRow label="GIR" value={resident.gir} />
               <InfoRow label="Arrivée" value={formatDate(resident.arrival)} />
               <InfoRow label="Départ" value={formatDate(resident.departure)} />
-          </div>
+            </div>
           </div>
 
           {/* Allergy Alert */}
@@ -91,13 +97,13 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
 
           {/* Medical & Care */}
           <DetailCard icon={Stethoscope} title="Dossier Médical & Soins">
-              <DetailItem label="Antécédents médicaux" value={<p>{resident.medicalHistory}</p>} />
-              <DetailItem label="Médecin traitant" value={resident.treatingDoctor} />
+            <DetailItem label="Antécédents médicaux" value={<p>{resident.medicalHistory}</p>} />
+            <DetailItem label="Médecin traitant" value={resident.treatingDoctor} />
           </DetailCard>
-          
+
           {/* Daily Life */}
           <DetailCard icon={HeartPulse} title="Vie Quotidienne & Habitudes">
-             <DetailItem label="Mobilité" value={resident.mobility} />
+            <DetailItem label="Mobilité" value={resident.mobility} />
              <DetailItem label="Régime et habitudes alimentaires" value={<p>{resident.dietaryNeeds}</p>} />
              <DetailItem label="Habitudes sociales et notes" value={<p>{resident.socialHabits}</p>} />
           </DetailCard>
