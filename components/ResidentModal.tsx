@@ -9,7 +9,7 @@ import HistoryItem from './HistoryItem.tsx';
 import AllergyAlert from './AllergyAlert.tsx';
 import ContactValue from './ContactValue.tsx';
 import StatusBadge from './StatusBadge.tsx';
-import MultilineText from './MultilineText.tsx';
+// import MultilineText from './MultilineText.tsx';
 import EmailValue from './EmailValue.tsx';
 
 interface ResidentModalProps {
@@ -56,15 +56,15 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose }) => {
 
           {/* Medical & Care */}
           <DetailCard icon={Stethoscope} title="Dossier Médical & Soins">
-              <DetailItem label="Antécédents médicaux" value={<MultilineText text={resident.medicalHistory} />} />
+              <DetailItem label="Antécédents médicaux" value={<p>{resident.medicalHistory}</p>} />
               <DetailItem label="Médecin traitant" value={resident.treatingDoctor} />
           </DetailCard>
           
           {/* Daily Life */}
           <DetailCard icon={HeartPulse} title="Vie Quotidienne & Habitudes">
              <DetailItem label="Mobilité" value={resident.mobility} />
-             <DetailItem label="Régime et habitudes alimentaires" value={<MultilineText text={resident.dietaryNeeds} />} />
-             <DetailItem label="Habitudes sociales et notes" value={<MultilineText text={resident.socialHabits} />} />
+             <DetailItem label="Régime et habitudes alimentaires" value={<p>{resident.dietaryNeeds}</p>} />
+             <DetailItem label="Habitudes sociales et notes" value={<p>{resident.socialHabits}</p>} />
           </DetailCard>
 
           {/* Admin */}
