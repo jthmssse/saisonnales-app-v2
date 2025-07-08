@@ -3,9 +3,11 @@ import { Search, Bell, Plus } from 'lucide-react';
 
 interface HeaderProps {
     onNewReservationClick: () => void;
+    search: string;
+    onSearchChange: (value: string) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ onNewReservationClick }) => {
+const Header: React.FC<HeaderProps> = ({ onNewReservationClick, search, onSearchChange }) => {
   return (
     <header className="bg-white shadow-sm border-b sticky top-0 z-40">
       <div className="flex items-center justify-end p-4 h-[69px] max-w-screen-2xl mx-auto px-6">
@@ -16,6 +18,8 @@ const Header: React.FC<HeaderProps> = ({ onNewReservationClick }) => {
               type="text"
               placeholder="Rechercher un résident..."
               className="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 w-40 sm:w-64 bg-white"
+              value={search}
+              onChange={e => onSearchChange(e.target.value)}
             />
           </div>
           <button className="p-2 hover:bg-gray-100 rounded-full relative">

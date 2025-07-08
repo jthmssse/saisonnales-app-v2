@@ -16,6 +16,7 @@ const App: React.FC = () => {
   const [residents, setResidents] = useState<Resident[]>(RESIDENTS);
   const [selectedResident, setSelectedResident] = useState<Resident | null>(null);
   const [isNewReservationModalOpen, setNewReservationModalOpen] = useState(false);
+  const [search, setSearch] = useState("");
 
   const handleSelectResidentById = useCallback((residentId: number | null) => {
     if (residentId === null) {
@@ -70,8 +71,16 @@ const App: React.FC = () => {
     switch (activeTab) {
       case 'communications':
         return <CommunicationsView />;
-      case 'residents':
-        return <ResidentsView onSelectResident={setSelectedResident} residents={residents} />;
+      case 'residents': {
+        // Filtrage côté App pour synchroniser avec la barre de recherche globale
+        const s = search.trim().toLowerCase();
+        const filteredResidents = !s ? residents : residents.filter(r =>
+          r.name.toLowerCase().includes(s) ||
+          (r.room && r.room.toLowerCase().includes(s)) ||
+          (r.familyContactName && r.familyContactName.toLowerCase().includes(s))
+        );
+        return <ResidentsView onSelectResident={setSelectedResident} residents={filteredResidents} />;
+      }
       case 'dashboard':
       default:
         return <Dashboard onSelectResident={handleSelectResidentById} residents={residents} planningData={planningData} />;
@@ -80,7 +89,11 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800">
-      <Header onNewReservationClick={() => setNewReservationModalOpen(true)} />
+      <Header
+        onNewReservationClick={() => setNewReservationModalOpen(true)}
+        search={search}
+        onSearchChange={setSearch}
+      />
       <div className="flex">
         <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
         <main className="flex-1 p-6 lg:p-8">
