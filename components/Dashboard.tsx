@@ -10,11 +10,22 @@ interface DashboardProps {
     onSelectResident: (residentId: number) => void;
     residents: Resident[];
     planningData: any[]; // adapte le type si tu veux
+    search?: string;
 }
 
 const PRESTATAIRES_EMAIL = "prestataires@example.com";
 
-export default function Dashboard({ onSelectResident, residents, planningData }: DashboardProps) {
+export default function Dashboard({ onSelectResident, residents, planningData, search }: DashboardProps) {
+  // Filtrage des résidents pour le planning si search fourni
+  const filteredResidents = React.useMemo(() => {
+    if (!search) return residents;
+    const s = search.trim().toLowerCase();
+    return residents.filter(r =>
+      r.name.toLowerCase().includes(s) ||
+      (r.room && r.room.toLowerCase().includes(s)) ||
+      (r.familyContactName && r.familyContactName.toLowerCase().includes(s))
+    );
+  }, [search, residents]);
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6">
@@ -62,7 +73,7 @@ export default function Dashboard({ onSelectResident, residents, planningData }:
         </div>
       </div>
 
-      <PlanningCalendar planningData={planningData} onSelectResident={onSelectResident} residents={residents} />
+      <PlanningCalendar planningData={planningData} onSelectResident={onSelectResident} residents={filteredResidents} />
     </div>
   );
 }
