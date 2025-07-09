@@ -5,15 +5,16 @@ import ResidentCard from './ResidentCard.tsx';
 
 interface ResidentsViewProps {
   onSelectResident: (resident: Resident) => void;
+  onNewResidentClick: () => void;
   residents: Resident[];
 }
 
-const ResidentsView: React.FC<ResidentsViewProps> = ({ onSelectResident, residents }) => {
+const ResidentsView: React.FC<ResidentsViewProps> = ({ onSelectResident, residents, onNewResidentClick }) => {
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
         <h2 className="text-xl font-semibold text-gray-800">Liste des Résidents</h2>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center space-x-2 transition-colors">
+        <button onClick={onNewResidentClick} className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center space-x-2 transition-colors">
           <Plus className="w-4 h-4" />
           <span>Nouveau Résident</span>
         </button>

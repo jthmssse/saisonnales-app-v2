@@ -131,6 +131,7 @@ const App: React.FC = () => {
         return <ResidentsView
           residents={filteredResidents}
           onSelectResident={setSelectedResident}
+          onNewResidentClick={() => setNewReservationModalOpen(true)}
         />;
       }
       case 'dashboard':
