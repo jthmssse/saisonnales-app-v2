@@ -18,11 +18,7 @@ const AllergyAlert: React.FC<AllergyAlertProps> = ({ allergies }) => {
             textColor: 'text-red-700'
         }
         : {
-            bg: 'bg-green-50',
-            border: 'border-green-200',
-            icon: <CheckCircle className="w-6 h-6 text-green-500 flex-shrink-0" />,
-            titleColor: 'text-green-800',
-            textColor: 'text-green-700'
+            bg: 'bg-[#e6f0f0]',
         };
 
     return (
