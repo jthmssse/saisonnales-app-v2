@@ -38,12 +38,12 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
                 key={item.id}
                 onClick={() => setActiveTab(item.id as ActiveTab)}
                 className={`w-full flex items-center space-x-3 p-3 rounded-lg text-left transition-colors relative ${
-                    activeTab === item.id 
-                    ? 'text-emerald-600 font-semibold' 
-                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                    activeTab === item.id
+                    ? 'text-[#006561] font-semibold bg-[#006561]/10'
+                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-800'
                 }`}
                 >
-                {activeTab === item.id && <div className="absolute left-0 top-2 bottom-2 w-1 bg-emerald-500 rounded-r-full"></div>}
+                {activeTab === item.id && <div className="absolute left-0 top-2 bottom-2 w-1 bg-[#006561] rounded-r-full"></div>}
                 <item.icon className={`w-5 h-5 flex-shrink-0`} />
                 <span>{item.label}</span>
                 </button>
