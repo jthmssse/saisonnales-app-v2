@@ -174,7 +174,7 @@ const PlanningCalendar: React.FC<PlanningCalendarProps> = ({ planningData, resid
                     return (
                       <div
                         key={stay.id}
-                        className="absolute z-10 flex items-center bg-green-500 rounded text-white cursor-pointer hover:bg-green-600 transition-colors shadow-sm h-10 top-1/2 -translate-y-1/2"
+                        className="absolute z-10 flex items-center bg-[#006561] rounded text-white cursor-pointer hover:bg-[#00524e] transition-colors shadow-sm h-10 top-1/2 -translate-y-1/2"
                         style={{
                           left: `${leftPercent}%`,
                           width: `calc(${widthPercent}% - 2px)`,
