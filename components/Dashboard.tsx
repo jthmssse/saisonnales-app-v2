@@ -43,17 +43,17 @@ export default function Dashboard({ onSelectResident, residents, planningData, s
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6">
         <OccupancyCard />
         {/* GIR moyen */}
-        <StatCard 
-          icon={Clock} 
-          title="GIR moyen" 
-          content={<p className="text-2xl font-bold text-blue-600">{
+        <StatCard
+          icon={Clock}
+          title="GIR moyen"
+          content={<p className="text-2xl font-bold text-[#006561]">{
             (() => {
               const girs = residents.map(r => parseInt((r.gir || '').replace(/\D/g, ''))).filter(n => !isNaN(n));
               if (!girs.length) return 'N/A';
               return (girs.reduce((a, b) => a + b, 0) / girs.length).toFixed(2);
             })()
-          }</p>} 
-          color="blue" 
+          }</p>}
+          color="green"
         />
         <StatCard icon={Clock} title="Durée Moyenne Séjour" content={<p className="text-2xl font-bold text-[#006561]">21 jours</p>} color="green" />
         <PeriodStatCard icon={ArrowRight} title="Arrivées" data={arrivalsData} color="green" colorClass="text-[#006561]" />
