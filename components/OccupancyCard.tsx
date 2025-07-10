@@ -6,9 +6,9 @@ type Period = 'Journalier' | 'Hebdomadaire' | 'Mensuel';
 
 const StatOccupationContent: React.FC<{period: Period}> = ({ period }) => {
     const data = {
-        'Journalier': { value: '75%', color: 'text-blue-600' },
-        'Hebdomadaire': { value: '72%', color: 'text-indigo-600' },
-        'Mensuel': { value: '24%', color: 'text-purple-600' },
+        'Journalier': { value: '75%', color: 'text-[#006561]' },
+        'Hebdomadaire': { value: '72%', color: 'text-[#006561]' },
+        'Mensuel': { value: '24%', color: 'text-[#006561]' },
     };
     return (
         <p className={`text-2xl font-bold ${data[period].color}`}>{data[period].value} <span className="text-sm font-normal text-gray-500">{period}</span></p>
@@ -43,11 +43,11 @@ const OccupancyCard: React.FC = () => {
     );
 
     return (
-        <StatCard 
-            icon={Users} 
+        <StatCard
+            icon={Users}
             title="Taux d'occupation"
             content={<StatOccupationContent period={period} />}
-            color="blue"
+            color="green"
             titleAction={titleAction}
         />
     );
