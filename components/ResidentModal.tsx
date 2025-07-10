@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { X, Phone, User, Stethoscope, HeartPulse, FileText, Trash2 } from 'lucide-react';
 import { Resident } from '../types';
 import DetailCard from './DetailCard.tsx';
@@ -19,16 +19,25 @@ interface ResidentModalProps {
   onDeleteResident: (residentId: number) => void;
 }
 
-// Helper function moved outside the component for better performance and to fix syntax errors.
-const formatDate = (dateString: string | undefined) => {
+// Helper function to format date for display
+const formatDateDisplay = (dateString: string | undefined) => {
     if (!dateString) return 'N/A';
     const [year, month, day] = dateString.split('-');
     return `${day}/${month}/${year}`;
 };
 
+// Helper function to format date for input type="date"
+const formatDateInput = (dateString: string | undefined) => {
+  if (!dateString) return '';
+  return dateString.split('T')[0]; // Ensures YYYY-MM-DD format
+};
+
 const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpdateResident, onDeleteResident }) => {
-  const [editRoom, setEditRoom] = React.useState(resident.room);
-  const [documents, setDocuments] = React.useState(resident.documents || []);
+  const [editRoom, setEditRoom] = useState(resident.room);
+  const [editGir, setEditGir] = useState(resident.gir);
+  const [editArrival, setEditArrival] = useState(formatDateInput(resident.arrival));
+  const [editDeparture, setEditDeparture] = useState(formatDateInput(resident.departure));
+  const [documents, setDocuments] = useState(resident.documents || []);
 
   // Ajout de pièce jointe
   const handleAddDocument = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,7 +62,31 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
   // Changement de chambre
   const handleRoomChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setEditRoom(e.target.value);
-    onUpdateResident({ ...resident, room: e.target.value });
+  };
+
+  const handleGirChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setEditGir(e.target.value);
+  };
+
+  const handleArrivalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditArrival(e.target.value);
+  };
+
+  const handleDepartureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditDeparture(e.target.value);
+  };
+
+  const handleSave = () => {
+    const updatedResident: Resident = {
+      ...resident,
+      room: editRoom,
+      gir: editGir,
+      arrival: editArrival,
+      departure: editDeparture,
+      documents: documents,
+    };
+    onUpdateResident(updatedResident);
+    onClose(); // Close modal after saving
   };
 
   const handleDelete = () => {
@@ -93,9 +126,36 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
                   ))}
                 </select>
               </div>
-              <InfoRow label="GIR" value={resident.gir} />
-              <InfoRow label="Arrivée" value={formatDate(resident.arrival)} />
-              <InfoRow label="Départ" value={formatDate(resident.departure)} />
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">GIR</label>
+                <select
+                  className="w-full border rounded px-2 py-1 text-sm"
+                  value={editGir}
+                  onChange={handleGirChange}
+                >
+                  {Array.from({ length: 6 }, (_, i) => (
+                    <option key={i + 1} value={`GIR ${i + 1}`}>{`GIR ${i + 1}`}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Arrivée</label>
+                <input
+                  type="date"
+                  className="w-full border rounded px-2 py-1 text-sm"
+                  value={editArrival}
+                  onChange={handleArrivalChange}
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Départ</label>
+                <input
+                  type="date"
+                  className="w-full border rounded px-2 py-1 text-sm"
+                  value={editDeparture}
+                  onChange={handleDepartureChange}
+                />
+              </div>
             </div>
           </div>
 
@@ -117,21 +177,21 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
 
           {/* Admin */}
           <DetailCard icon={FileText} title="Dossier Administratif">
-             <DetailItem 
-                label="Devis" 
-                value={<StatusBadge isPositive={resident.devisEnvoye} positiveText="Envoyé" negativeText="Non envoyé" />} 
+             <DetailItem
+                label="Devis"
+                value={<StatusBadge isPositive={resident.devisEnvoye} positiveText="Envoyé" negativeText="Non envoyé" />}
              />
-             <DetailItem 
-                label="Pièces justificatives" 
-                value={<StatusBadge isPositive={resident.docsComplete} positiveText="Complet" negativeText="Incomplet" negativeColor="red" />} 
+             <DetailItem
+                label="Pièces justificatives"
+                value={<StatusBadge isPositive={resident.docsComplete} positiveText="Complet" negativeText="Incomplet" negativeColor="red" />}
              />
           </DetailCard>
           
            {/* Contact */}
           <DetailCard icon={User} title="Personnes à Contacter">
-             <DetailItem 
-                label={resident.familyContactRelation || "Contact Principal"} 
-                value={<ContactValue name={resident.familyContactName} phone={resident.phone} />} 
+             <DetailItem
+                label={resident.familyContactRelation || "Contact Principal"}
+                value={<ContactValue name={resident.familyContactName} phone={resident.phone} />}
              />
              {resident.email && (
                 <DetailItem label="Email" value={<EmailValue email={resident.email} />} />
@@ -185,7 +245,13 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
               <Trash2 className="w-4 h-4" />
               <span>Supprimer le résident</span>
             </button>
-            <a 
+            <button
+              onClick={handleSave}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center space-x-2 transition-colors text-sm font-medium"
+            >
+              <span>Enregistrer les modifications</span>
+            </button>
+            <a
               href={`tel:${resident.phone}`}
               className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center space-x-2 transition-colors"
             >
