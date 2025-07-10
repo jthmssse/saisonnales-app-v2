@@ -43,7 +43,7 @@ export default function Dashboard({ onSelectResident, residents, planningData, s
           }</p>} 
           color="blue" 
         />
-        <StatCard icon={Clock} title="Durée Moyenne Séjour" content={<p className="text-2xl font-bold text-green-600">21 jours</p>} color="green" />
+        <StatCard icon={Clock} title="Durée Moyenne Séjour" content={<p className="text-2xl font-bold text-[#006561]">21 jours</p>} color="green" />
         <StatCard icon={ArrowRight} title="Arrivées" content={<p className="text-2xl font-bold text-purple-600">0 <span className="text-sm font-normal text-gray-500">Cette semaine: 1</span></p>} color="purple" />
         <StatCard icon={ArrowLeft} title="Départs" content={<p className="text-2xl font-bold text-orange-600">0 <span className="text-sm font-normal text-gray-500">Cette semaine: 4</span></p>} color="orange" />
       </div>
