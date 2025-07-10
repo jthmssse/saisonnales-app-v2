@@ -75,4 +75,4 @@ export interface StatCardProps {
 
 export type NewReservationData = Omit<Resident, 'id' | 'status'>;
 
-export type CalendarView = 'week' | 'month';
+export type CalendarView = 'week' | 'month' | 'year';

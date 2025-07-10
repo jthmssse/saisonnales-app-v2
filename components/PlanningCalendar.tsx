@@ -10,8 +10,7 @@ interface PlanningCalendarProps {
 }
 
 // --- Date Helper Functions ---
-const dayNames = ['lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.', 'dim.'];
-const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+const monthNamesShort = ["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Aoû", "Sep", "Oct", "Nov", "Déc"];
 
 const getStartOfWeek = (date: Date): Date => {
     const d = new Date(date);
@@ -28,62 +27,70 @@ const dateDiffInDays = (a: Date, b: Date): number => {
   return Math.floor((utc2 - utc1) / _MS_PER_DAY);
 };
 
+const getDayOfYear = (date: Date): number => {
+  const start = new Date(date.getFullYear(), 0, 0);
+  const diff = (date.getTime() - start.getTime()) + ((start.getTimezoneOffset() - date.getTimezoneOffset()) * 60 * 1000);
+  const oneDay = 1000 * 60 * 60 * 24;
+  return Math.floor(diff / oneDay);
+};
+
 
 const PlanningCalendar: React.FC<PlanningCalendarProps> = ({ planningData, residents, onSelectResident }) => {
   const [view, setView] = useState<CalendarView>('month');
   const [currentDate, setCurrentDate] = useState(new Date(2025, 6, 1)); // Start on July 2025
 
   const handlePrev = () => {
-    setCurrentDate(prev => {
-      const newDate = new Date(prev);
-      if (view === 'month') {
-        newDate.setMonth(newDate.getMonth() - 1);
-      } else {
-        newDate.setDate(newDate.getDate() - 7);
-      }
-      return newDate;
-    });
+      setCurrentDate(prev => {
+          const newDate = new Date(prev);
+          switch (view) {
+              case 'year':
+                  newDate.setFullYear(newDate.getFullYear() - 1);
+                  break;
+              case 'month':
+                  newDate.setMonth(newDate.getMonth() - 1);
+                  break;
+              case 'week':
+                  newDate.setDate(newDate.getDate() - 7);
+                  break;
+          }
+          return newDate;
+      });
   };
   
   const handleNext = () => {
-    setCurrentDate(prev => {
-      const newDate = new Date(prev);
-      if (view === 'month') {
-        newDate.setMonth(newDate.getMonth() + 1);
-      } else {
-        newDate.setDate(newDate.getDate() + 7);
-      }
-      return newDate;
-    });
+      setCurrentDate(prev => {
+          const newDate = new Date(prev);
+          switch (view) {
+              case 'year':
+                  newDate.setFullYear(newDate.getFullYear() + 1);
+                  break;
+              case 'month':
+                  newDate.setMonth(newDate.getMonth() + 1);
+                  break;
+              case 'week':
+                  newDate.setDate(newDate.getDate() + 7);
+                  break;
+          }
+          return newDate;
+      });
   };
 
-  const { daysArray, title } = useMemo(() => {
+  const { headers, title, viewStart, numCols } = useMemo(() => {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
+    const monthName = new Intl.DateTimeFormat('fr-FR', { month: 'long' }).format(currentDate);
     
-    if (view === 'month') {
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-      return {
-        daysArray: Array.from({ length: daysInMonth }, (_, i) => new Date(year, month, i + 1)),
-        title: `${monthNames[month]} ${year}`
-      };
-    } else { // week view
-      const startOfWeek = getStartOfWeek(currentDate);
-      const days = Array.from({ length: 7 }, (_, i) => {
-          const day = new Date(startOfWeek);
-          day.setDate(startOfWeek.getDate() + i);
-          return day;
-      });
-      const endOfWeek = days[6];
-      let titleStr = `${startOfWeek.getDate()} ${monthNames[startOfWeek.getMonth()]}`;
-      if (startOfWeek.getFullYear() !== endOfWeek.getFullYear()) {
-        titleStr += ` ${startOfWeek.getFullYear()}`;
-      }
-      titleStr += ` - ${endOfWeek.getDate()} ${monthNames[endOfWeek.getMonth()]} ${endOfWeek.getFullYear()}`
-      return {
-        daysArray: days,
-        title: titleStr
-      }
+    switch (view) {
+      case 'year':
+        return {
+          headers: monthNamesShort.map(m => ({ main: m, sub: '' })),
+          title: year.toString(),
+          viewStart: new Date(year, 0, 1),
+          numCols: 12,
+        };
+      case 'week': {
+        const start = getStartOfWeek(currentDate);
+        const weekHeaders = Array.from({ length:
     }
   }, [currentDate, view]);
 
