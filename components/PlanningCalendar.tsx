@@ -34,6 +34,8 @@ const getDayOfYear = (date: Date): number => {
   return Math.floor(diff / oneDay);
 };
 
+const dayNames = ["L", "M", "M", "J", "V", "S", "D"];
+
 
 const PlanningCalendar: React.FC<PlanningCalendarProps> = ({ planningData, residents, onSelectResident }) => {
   const [view, setView] = useState<CalendarView>('month');
@@ -75,24 +77,59 @@ const PlanningCalendar: React.FC<PlanningCalendarProps> = ({ planningData, resid
       });
   };
 
-  const { headers, title, viewStart, numCols } = useMemo(() => {
+  const { title, daysArray } = useMemo(() => {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
     const monthName = new Intl.DateTimeFormat('fr-FR', { month: 'long' }).format(currentDate);
-    
+
+    let newTitle = '';
+    let newDaysArray: Date[] = [];
+
     switch (view) {
-      case 'year':
-        return {
-          headers: monthNamesShort.map(m => ({ main: m, sub: '' })),
-          title: year.toString(),
-          viewStart: new Date(year, 0, 1),
-          numCols: 12,
-        };
-      case 'week': {
-        const start = getStartOfWeek(currentDate);
-        const weekHeaders = Array.from({ length:
+        case 'year': {
+            newTitle = year.toString();
+            const firstDay = new Date(year, 0, 1);
+            const lastDay = new Date(year, 11, 31);
+            newDaysArray = [];
+            for (let d = new Date(firstDay); d <= lastDay; d.setDate(d.getDate() + 1)) {
+                newDaysArray.push(new Date(d));
+            }
+            break;
+        }
+        case 'month': {
+            newTitle = `${monthName} ${year}`;
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            newDaysArray = [];
+            for (let d = new Date(firstDay); d <= lastDay; d.setDate(d.getDate() + 1)) {
+                newDaysArray.push(new Date(d));
+            }
+            break;
+        }
+        case 'week': {
+            const startOfWeek = getStartOfWeek(currentDate);
+            const endOfWeek = new Date(startOfWeek);
+            endOfWeek.setDate(endOfWeek.getDate() + 6);
+            const startMonthName = new Intl.DateTimeFormat('fr-FR', { month: 'short' }).format(startOfWeek);
+            const endMonthName = new Intl.DateTimeFormat('fr-FR', { month: 'short' }).format(endOfWeek);
+            
+            if (startOfWeek.getMonth() === endOfWeek.getMonth()) {
+                newTitle = `${startOfWeek.getDate()} - ${endOfWeek.getDate()} ${startMonthName} ${year}`;
+            } else {
+                newTitle = `${startOfWeek.getDate()} ${startMonthName} - ${endOfWeek.getDate()} ${endMonthName} ${year}`;
+            }
+
+            newDaysArray = [];
+            for (let i = 0; i < 7; i++) {
+                const day = new Date(startOfWeek);
+                day.setDate(day.getDate() + i);
+                newDaysArray.push(day);
+            }
+            break;
+        }
     }
-  }, [currentDate, view]);
+    return { title: newTitle, daysArray: newDaysArray };
+}, [currentDate, view]);
 
   const numDays = daysArray.length;
   const today = new Date();
@@ -106,7 +143,7 @@ const PlanningCalendar: React.FC<PlanningCalendarProps> = ({ planningData, resid
             <div className="flex items-center bg-gray-100 rounded-lg p-1 text-sm font-medium">
                  <button onClick={() => setView('week')} className={`px-3 py-1 rounded-md ${view === 'week' ? 'bg-white shadow-sm text-gray-800' : 'text-gray-500'}`}>Semaine</button>
                  <button onClick={() => setView('month')} className={`px-3 py-1 rounded-md ${view === 'month' ? 'bg-white shadow-sm text-gray-800' : 'text-gray-500'}`}>Mois</button>
-                 <button disabled className="px-3 py-1 rounded-md text-gray-400 cursor-not-allowed">Année</button>
+                 <button onClick={() => setView('year')} className={`px-3 py-1 rounded-md ${view === 'year' ? 'bg-white shadow-sm text-gray-800' : 'text-gray-500'}`}>Année</button>
             </div>
             <button onClick={handlePrev} className="p-1.5 hover:bg-gray-100 rounded-md transition-colors">
               <ArrowLeft className="w-4 h-4" />
@@ -162,7 +199,7 @@ const PlanningCalendar: React.FC<PlanningCalendarProps> = ({ planningData, resid
                     const stayEnd = new Date(stay.end);
                     stayEnd.setHours(0, 0, 0, 0);
 
-                    if (stayEnd <= viewStart || stayStart >= viewEnd) return null;
+                    if (stayEnd < viewStart || stayStart > viewEnd) return null;
 
                     const resident = residents.find(r => r.id === stay.residentId);
                     if (!resident) return null;
@@ -170,7 +207,7 @@ const PlanningCalendar: React.FC<PlanningCalendarProps> = ({ planningData, resid
                     const effectiveStart = stayStart < viewStart ? viewStart : stayStart;
                     const effectiveEnd = stayEnd > viewEnd ? viewEnd : stayEnd;
                     
-                    const duration = dateDiffInDays(effectiveStart, effectiveEnd);
+                    const duration = dateDiffInDays(effectiveStart, effectiveEnd) + 1;
                     if (duration <= 0) return null;
                     
                     const offset = dateDiffInDays(viewStart, effectiveStart);
