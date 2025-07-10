@@ -1,10 +1,10 @@
 import React from 'react';
 import { Clock, ArrowRight, TrendingDown, AlertTriangle, Send, ArrowLeft } from 'lucide-react';
-import StatCard from './StatCard.tsx';
-import PlanningCalendar from './PlanningCalendar.tsx';
+import StatCard from './StatCard';
+import PlanningCalendar from './PlanningCalendar';
 import { Resident } from '../types';
-import OccupancyCard from './OccupancyCard.tsx';
-import PeriodStatCard from './PeriodStatCard.tsx';
+import OccupancyCard from './OccupancyCard';
+import PeriodStatCard from './PeriodStatCard';
 
 interface DashboardProps {
     onSelectResident: (residentId: number) => void;
