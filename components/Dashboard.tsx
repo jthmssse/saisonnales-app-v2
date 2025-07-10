@@ -2,9 +2,9 @@ import React from 'react';
 import { Clock, ArrowRight, TrendingDown, AlertTriangle, Send, ArrowLeft } from 'lucide-react';
 import StatCard from './StatCard.tsx';
 import PlanningCalendar from './PlanningCalendar.tsx';
-import { PLANNING_DATA } from '../constants';
 import { Resident } from '../types';
 import OccupancyCard from './OccupancyCard.tsx';
+import PeriodStatCard from './PeriodStatCard.tsx';
 
 interface DashboardProps {
     onSelectResident: (residentId: number) => void;
@@ -14,6 +14,18 @@ interface DashboardProps {
 }
 
 const PRESTATAIRES_EMAIL = "prestataires@example.com";
+
+const arrivalsData = {
+    'Journalier': { value: '0', subtext: "Aujourd'hui" },
+    'Hebdomadaire': { value: '1', subtext: 'Cette semaine' },
+    'Mensuel': { value: '8', subtext: 'Ce mois-ci' },
+};
+
+const departuresData = {
+    'Journalier': { value: '0', subtext: "Aujourd'hui" },
+    'Hebdomadaire': { value: '4', subtext: 'Cette semaine' },
+    'Mensuel': { value: '11', subtext: 'Ce mois-ci' },
+};
 
 export default function Dashboard({ onSelectResident, residents, planningData, search }: DashboardProps) {
   // Filtrage des résidents pour le planning si search fourni
@@ -44,8 +56,8 @@ export default function Dashboard({ onSelectResident, residents, planningData, s
           color="blue" 
         />
         <StatCard icon={Clock} title="Durée Moyenne Séjour" content={<p className="text-2xl font-bold text-[#006561]">21 jours</p>} color="green" />
-        <StatCard icon={ArrowRight} title="Arrivées" content={<p className="text-2xl font-bold text-purple-600">0 <span className="text-sm font-normal text-gray-500">Cette semaine: 1</span></p>} color="purple" />
-        <StatCard icon={ArrowLeft} title="Départs" content={<p className="text-2xl font-bold text-orange-600">0 <span className="text-sm font-normal text-gray-500">Cette semaine: 4</span></p>} color="orange" />
+        <PeriodStatCard icon={ArrowRight} title="Arrivées" data={arrivalsData} color="green" colorClass="text-[#006561]" />
+        <PeriodStatCard icon={ArrowLeft} title="Départs" data={departuresData} color="orange" colorClass="text-orange-600" />
       </div>
 
       <div className="bg-yellow-100 border border-yellow-300 rounded-lg p-4">
