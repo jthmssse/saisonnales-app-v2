@@ -25,7 +25,7 @@ const Header: React.FC<HeaderProps> = ({ onNewReservationClick, search, onSearch
             <input
               type="text"
               placeholder="Rechercher un résident..."
-              className="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 w-40 sm:w-64 bg-white"
+              className="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white flex-grow"
               value={search}
               onChange={e => onSearchChange(e.target.value)}
             />
