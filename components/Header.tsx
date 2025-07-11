@@ -11,7 +11,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ onNewReservationClick, search, onSearchChange, onToggleSidebar }) => {
   return (
     <header className="bg-white shadow-sm border-b sticky top-0 z-40">
-      <div className="flex items-center justify-between p-4 h-[69px] max-w-screen-2xl mx-auto px-6"> {/* Changed justify-end to justify-between */}
+      <div className="flex items-center justify-between p-4 h-[69px] max-w-screen-2xl mx-auto px-6">
         <button
           className="lg:hidden p-2 hover:bg-gray-100 rounded-full text-gray-500"
           onClick={onToggleSidebar}
