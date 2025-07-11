@@ -5,6 +5,8 @@ import { ActiveTab } from '../types';
 interface SidebarProps {
   activeTab: ActiveTab;
   setActiveTab: (tab: ActiveTab) => void;
+  isSidebarOpen: boolean; // New prop
+  setIsSidebarOpen: (isOpen: boolean) => void; // New prop
 }
 
 const navItems = [
@@ -13,9 +15,9 @@ const navItems = [
     { id: 'communications', label: 'Communications', icon: MessageSquare },
 ];
 
-const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
+const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, isSidebarOpen, setIsSidebarOpen }) => {
   return (
-    <nav className="w-64 bg-white shadow-sm border-r h-screen sticky top-0 flex flex-col justify-between">
+    <nav className={`fixed inset-y-0 left-0 w-64 bg-white shadow-sm border-r h-screen flex flex-col justify-between z-50 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 transition-transform duration-300 ease-in-out`}>
       <div>
         <div className="p-4 flex items-center space-x-3 border-b h-[69px]">
             <div className="w-10 h-10 bg-yellow-400 rounded-lg flex items-center justify-center overflow-hidden">
@@ -36,7 +38,10 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
             {navItems.map(item => (
                 <button
                 key={item.id}
-                onClick={() => setActiveTab(item.id as ActiveTab)}
+                onClick={() => {
+                  setActiveTab(item.id as ActiveTab);
+                  setIsSidebarOpen(false); // Close sidebar on item click
+                }}
                 className={`w-full flex items-center space-x-3 p-3 rounded-lg text-left transition-colors relative ${
                     activeTab === item.id
                     ? 'text-[#006561] font-semibold bg-[#006561]/10'

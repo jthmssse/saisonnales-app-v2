@@ -13,6 +13,7 @@ const CURRENT_USER_NAME = "Jean-Michel";
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // New state for sidebar
   // On initialise avec un tableau vide pour éviter d'écraser le localStorage avec les données par défaut au premier rendu.
   const [residents, setResidents] = useState<Resident[]>([]);
   const [selectedResident, setSelectedResident] = useState<Resident | null>(null);
@@ -151,10 +152,11 @@ const App: React.FC = () => {
         onNewReservationClick={() => setNewReservationModalOpen(true)}
         search={['dashboard', 'residents'].includes(activeTab) ? search : ''}
         onSearchChange={['dashboard', 'residents'].includes(activeTab) ? setSearch : () => {}}
+        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} // Pass toggle function
       />
       <div className="flex">
-        <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
-        <main className="flex-1 p-6 lg:p-8">
+        <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
+        <main className="flex-1 p-6 lg:p-8 lg:ml-64">
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-gray-900">Bonjour, {CURRENT_USER_NAME}</h1>
             <p className="text-gray-600">Voici le résumé de l'activité de votre résidence.</p>
@@ -162,6 +164,12 @@ const App: React.FC = () => {
           {renderContent()}
         </main>
       </div>
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        ></div>
+      )}
 
       {selectedResident && (
         <ResidentModal

@@ -16,7 +16,7 @@ export interface Resident {
   name: string;
   room: string;
   gir: string;
-  status: 'Actif' | 'À venir' | 'Parti';
+  status: 'Actif' | 'À venir' | 'Terminé';
   arrival: string; // "YYYY-MM-DD"
   departure: string; // "YYYY-MM-DD"
   phone: string;
