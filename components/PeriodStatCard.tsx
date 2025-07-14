@@ -18,7 +18,7 @@ interface PeriodStatContentProps {
 const PeriodStatContent: React.FC<PeriodStatContentProps> = ({ period, data, colorClass }) => {
     const currentData = data[period];
     return (
-        <p className={`text-2xl font-bold ${colorClass}`}>{currentData.value} <span className="text-sm font-normal text-gray-500">{currentData.subtext}</span></p>
+        <p className={`text-xl sm:text-2xl font-bold ${colorClass}`}>{currentData.value} <span className="text-xs sm:text-sm font-normal text-gray-500">{currentData.subtext}</span></p>
     );
 };
 

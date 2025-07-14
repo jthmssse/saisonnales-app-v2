@@ -17,7 +17,7 @@ const navItems = [
 
 const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, isSidebarOpen, setIsSidebarOpen }) => {
   return (
-    <nav className={`fixed inset-y-0 left-0 w-64 bg-white shadow-sm border-r h-screen flex flex-col justify-between z-50 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 transition-transform duration-300 ease-in-out`}>
+    <nav className={`fixed inset-y-0 left-0 w-64 bg-white shadow-lg border-r h-screen flex flex-col justify-between z-50 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 transition-transform duration-300 ease-in-out`}>
       <div>
         <div className="p-4 flex items-center space-x-3 border-b h-[69px]">
             <div className="w-10 h-10 bg-yellow-400 rounded-lg flex items-center justify-center overflow-hidden">

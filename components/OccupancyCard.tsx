@@ -11,7 +11,7 @@ const StatOccupationContent: React.FC<{period: Period}> = ({ period }) => {
         'Mensuel': { value: '24%', color: 'text-[#006561]' },
     };
     return (
-        <p className={`text-2xl font-bold ${data[period].color}`}>{data[period].value} <span className="text-sm font-normal text-gray-500">{period}</span></p>
+        <p className={`text-xl sm:text-2xl font-bold ${data[period].color}`}>{data[period].value} <span className="text-xs sm:text-sm font-normal text-gray-500">{period}</span></p>
     );
 };
 
