@@ -124,28 +124,17 @@ export default function Dashboard({ onSelectResident, residents, planningData, s
         <PeriodStatCard icon={ArrowLeft} title="Départs" data={departures} color="orange" colorClass="text-orange-600" />
       </div>
 
-      <div className="bg-yellow-100 border border-yellow-300 rounded-lg p-4 sm:p-5">
-        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
-          <div className="flex items-start space-x-3">
-            <AlertTriangle className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-600 flex-shrink-0 mt-0.5" />
-            <div>
-              <h3 className="font-semibold text-yellow-900 text-base sm:text-lg">Alerte : Taux d'occupation faible</h3>
-              <p className="text-xs sm:text-sm text-yellow-800">Le taux d'occupation mensuel est inférieur à 80%. Pensez à contacter les prestataires.</p>
-            </div>
-          </div>
-          <a href={`mailto:${PRESTATAIRES_EMAIL}?subject=Contact%20concernant%20le%20taux%20d'occupation%20faible`} className="bg-red-600 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg hover:bg-red-700 text-xs sm:text-sm font-medium whitespace-nowrap flex items-center gap-2 transition-colors shadow-sm hover:shadow-md">
-            <Send size={14} className="sm:w-4 sm:h-4"/> Contacter les prestataires
-          </a>
-        </div>
-      </div>
 
       <div className="bg-white rounded-lg shadow-sm border p-4 sm:p-6">
         <div className="flex items-center space-x-2 mb-3 sm:mb-4">
           <TrendingDown className="w-4 h-4 sm:w-5 sm:h-5 text-red-500" />
           <h2 className="text-base sm:text-lg font-semibold text-gray-800">Prévisions d'Occupation Faible</h2>
         </div>
-        <div className="bg-red-50 rounded-lg p-3 sm:p-4">
+        <div className="bg-red-50 rounded-lg p-3 sm:p-4 flex flex-col">
           <p className="font-semibold text-red-800 text-sm sm:text-base">Du 30 juin au 27 septembre 2025</p>
+          <a href={`mailto:${PRESTATAIRES_EMAIL}?subject=Contact%20concernant%20le%20taux%20d'occupation%20faible`} className="mt-4 bg-red-600 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg hover:bg-red-700 text-xs sm:text-sm font-medium whitespace-nowrap flex items-center gap-2 transition-colors shadow-sm hover:shadow-md self-start">
+            <Send size={14} className="sm:w-4 sm:h-4"/> Contacter les prestataires
+          </a>
         </div>
       </div>
 
