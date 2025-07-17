@@ -31,6 +31,8 @@ export interface Resident {
   address?: string;
   familyContactName?: string;
   familyContactRelation?: string;
+  familyContactPhone?: string;
+  familyContactEmail?: string;
   
   // New fields for comprehensive care
   allergies?: string; // e.g., "Pollen, Pénicilline, Fruits à coque"

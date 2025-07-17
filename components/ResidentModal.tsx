@@ -40,6 +40,13 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
   const [editBirthDate, setEditBirthDate] = useState(formatDateInput(resident.birthDate));
   const [editImageRights, setEditImageRights] = useState(resident.imageRights);
   const [documents, setDocuments] = useState(resident.documents || []);
+  const [editPhone, setEditPhone] = useState(resident.phone || '');
+  const [editEmail, setEditEmail] = useState(resident.email || '');
+  const [editAddress, setEditAddress] = useState(resident.address || '');
+  const [editFamilyContactName, setEditFamilyContactName] = useState(resident.familyContactName || '');
+  const [editFamilyContactRelation, setEditFamilyContactRelation] = useState(resident.familyContactRelation || '');
+  const [editFamilyContactPhone, setEditFamilyContactPhone] = useState(resident.familyContactPhone || '');
+  const [editFamilyContactEmail, setEditFamilyContactEmail] = useState(resident.familyContactEmail || '');
 
   // Ajout de pièce jointe
   const handleAddDocument = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,6 +93,34 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
     setEditImageRights(e.target.value as 'oui' | 'non' | 'oui sauf réseaux sociaux');
   };
 
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditPhone(e.target.value);
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditEmail(e.target.value);
+  };
+
+  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditAddress(e.target.value);
+  };
+
+  const handleFamilyContactNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditFamilyContactName(e.target.value);
+  };
+
+  const handleFamilyContactRelationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditFamilyContactRelation(e.target.value);
+  };
+
+  const handleFamilyContactPhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditFamilyContactPhone(e.target.value);
+  };
+
+  const handleFamilyContactEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditFamilyContactEmail(e.target.value);
+  };
+
   const handleSave = () => {
     const updatedResident: Resident = {
       ...resident,
@@ -96,6 +131,13 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
       birthDate: editBirthDate,
       imageRights: editImageRights,
       documents: documents,
+      phone: editPhone,
+      email: editEmail,
+      address: editAddress,
+      familyContactName: editFamilyContactName,
+      familyContactRelation: editFamilyContactRelation,
+      familyContactPhone: editFamilyContactPhone,
+      familyContactEmail: editFamilyContactEmail,
     };
     onUpdateResident(updatedResident);
     onClose(); // Close modal after saving
@@ -192,6 +234,83 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
             </div>
           </div>
 
+          {/* Contact Info */}
+          <div className="bg-white border rounded-lg p-4">
+            <h3 className="font-semibold text-gray-800 mb-3 text-base">Coordonnées</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-6">
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Téléphone</label>
+                <input
+                  type="text"
+                  className="w-full border rounded px-2 py-1 text-sm"
+                  value={editPhone}
+                  onChange={handlePhoneChange}
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Email</label>
+                <input
+                  type="email"
+                  className="w-full border rounded px-2 py-1 text-sm"
+                  value={editEmail}
+                  onChange={handleEmailChange}
+                />
+              </div>
+              <div className="col-span-full">
+                <label className="block text-xs font-medium text-gray-500 mb-1">Adresse Postale</label>
+                <input
+                  type="text"
+                  className="w-full border rounded px-2 py-1 text-sm"
+                  value={editAddress}
+                  onChange={handleAddressChange}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Family Contact Info */}
+          <div className="bg-white border rounded-lg p-4">
+            <h3 className="font-semibold text-gray-800 mb-3 text-base">Famille à Contacter</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-6">
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Nom du contact familial</label>
+                <input
+                  type="text"
+                  className="w-full border rounded px-2 py-1 text-sm"
+                  value={editFamilyContactName}
+                  onChange={handleFamilyContactNameChange}
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Lien de parenté</label>
+                <input
+                  type="text"
+                  className="w-full border rounded px-2 py-1 text-sm"
+                  value={editFamilyContactRelation}
+                  onChange={handleFamilyContactRelationChange}
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Téléphone du contact familial</label>
+                <input
+                  type="text"
+                  className="w-full border rounded px-2 py-1 text-sm"
+                  value={editFamilyContactPhone}
+                  onChange={handleFamilyContactPhoneChange}
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Email du contact familial</label>
+                <input
+                  type="email"
+                  className="w-full border rounded px-2 py-1 text-sm"
+                  value={editFamilyContactEmail}
+                  onChange={handleFamilyContactEmailChange}
+                />
+              </div>
+            </div>
+          </div>
+
           {/* Allergy Alert */}
           <AllergyAlert allergies={resident.allergies} />
 
@@ -221,13 +340,20 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
           </DetailCard>
           
            {/* Contact */}
-          <DetailCard icon={User} title="Personnes à Contacter">
-             <DetailItem
-                label={resident.familyContactRelation || "Contact Principal"}
-                value={<ContactValue name={resident.familyContactName} phone={resident.phone} />}
-             />
+          <DetailCard icon={User} title="Coordonnées & Famille à Contacter">
+             <DetailItem label="Téléphone Résident" value={resident.phone} />
              {resident.email && (
-                <DetailItem label="Email" value={<EmailValue email={resident.email} />} />
+                <DetailItem label="Email Résident" value={<EmailValue email={resident.email} />} />
+             )}
+             {resident.address && (
+                <DetailItem label="Adresse Postale Résident" value={resident.address} />
+             )}
+             <DetailItem
+                label={`Contact Familial (${resident.familyContactRelation || 'Principal'})`}
+                value={<ContactValue name={resident.familyContactName} phone={resident.familyContactPhone} />}
+             />
+             {resident.familyContactEmail && (
+                <DetailItem label="Email Contact Familial" value={<EmailValue email={resident.familyContactEmail} />} />
              )}
           </DetailCard>
 
