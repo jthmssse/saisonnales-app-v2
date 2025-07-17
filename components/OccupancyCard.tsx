@@ -107,6 +107,14 @@ const OccupancyCard: React.FC<OccupancyCardProps> = ({ residents }) => {
 
     return (
         <div className="flex flex-col">
+            <div className="flex justify-end mb-4"> {/* Container for the new button */}
+                <button className="px-4 py-2 rounded-lg text-white font-bold bg-[#cc5500] hover:bg-[#b34b00] flex items-center text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l.684-.275a1 1 0 001.086.342l2.545 1.137a1 1 0 001.046 0l2.545-1.137a1 1 0 001.086-.342l.684.275a1 1 0 001.169-1.409l-7-14z" />
+                    </svg>
+                    Contacter les prestataires
+                </button>
+            </div>
             <StatCard
                 icon={Users}
                 title="Taux d'occupation"
@@ -114,25 +122,17 @@ const OccupancyCard: React.FC<OccupancyCardProps> = ({ residents }) => {
                 color="green"
                 titleAction={titleAction}
             />
-            <div className="mt-4 p-3 bg-yellow-100 border border-yellow-400 text-yellow-700 rounded-lg flex items-center justify-between">
-                {period === 'Mensuel' && getMonthlyOccupancyRate() < 80 && (
-                    <div className="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM10 13a1 1 0 100-2 1 1 0 000 2zm0-6a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-                        </svg>
-                        <div>
-                            <p className="font-bold">Alerte : Taux d'occupation faible</p>
-                            <p className="text-sm mt-1">Le taux d'occupation mensuel est inférieur à 80%. Pensez à contacter les prestataires.</p>
-                        </div>
-                    </div>
-                )}
-                <button className="ml-auto px-4 py-2 rounded-lg text-white font-bold bg-[#cc5500] hover:bg-[#b34b00] flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l.684-.275a1 1 0 001.086.342l2.545 1.137a1 1 0 001.046 0l2.545-1.137a1 1 0 001.086-.342l.684.275a1 1 0 001.169-1.409l-7-14z" />
+            {period === 'Mensuel' && getMonthlyOccupancyRate() < 80 && (
+                <div className="mt-4 p-3 bg-yellow-100 border border-yellow-400 text-yellow-700 rounded-lg flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM10 13a1 1 0 100-2 1 1 0 000 2zm0-6a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
                     </svg>
-                    Contacter les prestataires
-                </button>
-            </div>
+                    <div>
+                        <p className="font-bold">Alerte : Taux d'occupation faible</p>
+                        <p className="text-sm mt-1">Le taux d'occupation mensuel est inférieur à 80%. Pensez à contacter les prestataires.</p>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
