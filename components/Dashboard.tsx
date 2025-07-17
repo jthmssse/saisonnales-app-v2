@@ -15,19 +15,78 @@ interface DashboardProps {
 
 const PRESTATAIRES_EMAIL = "prestataires@example.com";
 
-const arrivalsData = {
-    'Journalier': { value: '0', subtext: "Aujourd'hui" },
-    'Hebdomadaire': { value: '1', subtext: 'Cette semaine' },
-    'Mensuel': { value: '8', subtext: 'Ce mois-ci' },
-};
+const calculateArrivalsDepartures = (residents: Resident[]) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-const departuresData = {
-    'Journalier': { value: '0', subtext: "Aujourd'hui" },
-    'Hebdomadaire': { value: '4', subtext: 'Cette semaine' },
-    'Mensuel': { value: '11', subtext: 'Ce mois-ci' },
+    // Daily
+    const dailyArrivals = residents.filter(r => {
+        const arrival = new Date(r.arrival);
+        arrival.setHours(0, 0, 0, 0);
+        return arrival.getTime() === today.getTime();
+    }).length;
+
+    const dailyDepartures = residents.filter(r => {
+        const departure = new Date(r.departure);
+        departure.setHours(0, 0, 0, 0);
+        return departure.getTime() === today.getTime();
+    }).length;
+
+    // Weekly
+    const startOfWeek = new Date(today);
+    startOfWeek.setDate(today.getDate() - today.getDay()); // Sunday as start of week
+    startOfWeek.setHours(0, 0, 0, 0);
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
+    endOfWeek.setHours(23, 59, 59, 999);
+
+    const weeklyArrivals = residents.filter(r => {
+        const arrival = new Date(r.arrival);
+        arrival.setHours(0, 0, 0, 0);
+        return arrival >= startOfWeek && arrival <= endOfWeek;
+    }).length;
+
+    const weeklyDepartures = residents.filter(r => {
+        const departure = new Date(r.departure);
+        departure.setHours(0, 0, 0, 0);
+        return departure >= startOfWeek && departure <= endOfWeek;
+    }).length;
+
+    // Monthly
+    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    startOfMonth.setHours(0, 0, 0, 0);
+    const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+    endOfMonth.setHours(23, 59, 59, 999);
+
+    const monthlyArrivals = residents.filter(r => {
+        const arrival = new Date(r.arrival);
+        arrival.setHours(0, 0, 0, 0);
+        return arrival >= startOfMonth && arrival <= endOfMonth;
+    }).length;
+
+    const monthlyDepartures = residents.filter(r => {
+        const departure = new Date(r.departure);
+        departure.setHours(0, 0, 0, 0);
+        return departure >= startOfMonth && departure <= endOfMonth;
+    }).length;
+
+    return {
+        arrivals: {
+            'Journalier': { value: dailyArrivals.toString(), subtext: "Aujourd'hui" },
+            'Hebdomadaire': { value: weeklyArrivals.toString(), subtext: 'Cette semaine' },
+            'Mensuel': { value: monthlyArrivals.toString(), subtext: 'Ce mois-ci' },
+        },
+        departures: {
+            'Journalier': { value: dailyDepartures.toString(), subtext: "Aujourd'hui" },
+            'Hebdomadaire': { value: weeklyDepartures.toString(), subtext: 'Cette semaine' },
+            'Mensuel': { value: monthlyDepartures.toString(), subtext: 'Ce mois-ci' },
+        }
+    };
 };
 
 export default function Dashboard({ onSelectResident, residents, planningData, search }: DashboardProps) {
+  const { arrivals, departures } = React.useMemo(() => calculateArrivalsDepartures(residents), [residents]);
+
   // Filtrage des résidents pour le planning si search fourni
   const filteredResidents = React.useMemo(() => {
     if (!search) return residents;
@@ -61,8 +120,8 @@ export default function Dashboard({ onSelectResident, residents, planningData, s
           color="green"
         />
         <StatCard icon={Clock} title="Durée Moyenne Séjour" content={<p className="text-2xl font-bold text-[#006561]">21 jours</p>} color="green" />
-        <PeriodStatCard icon={ArrowRight} title="Arrivées" data={arrivalsData} color="green" colorClass="text-[#006561]" />
-        <PeriodStatCard icon={ArrowLeft} title="Départs" data={departuresData} color="orange" colorClass="text-orange-600" />
+        <PeriodStatCard icon={ArrowRight} title="Arrivées" data={arrivals} color="green" colorClass="text-[#006561]" />
+        <PeriodStatCard icon={ArrowLeft} title="Départs" data={departures} color="orange" colorClass="text-orange-600" />
       </div>
 
       <div className="bg-yellow-100 border border-yellow-300 rounded-lg p-4 sm:p-5">
