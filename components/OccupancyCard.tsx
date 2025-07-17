@@ -14,9 +14,9 @@ const OccupancyCard: React.FC<OccupancyCardProps> = ({ residents }) => {
     const [period, setPeriod] = useState<Period>('Journalier');
     const periods: Period[] = ['Journalier', 'Hebdomadaire', 'Mensuel'];
 
-    const calculateOccupancy = (p: Period) => {
-        const totalRooms = 24; // Assuming 24 rooms as per planningData in App.tsx
+    const totalRooms = 24; // Assuming 24 rooms as per planningData in App.tsx
 
+    const calculateOccupancyRate = (p: Period): number => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
@@ -68,15 +68,18 @@ const OccupancyCard: React.FC<OccupancyCardProps> = ({ residents }) => {
             activeResidentsCount = totalOccupiedDays / daysInMonth;
         }
 
-        const occupancyRate = (activeResidentsCount / totalRooms) * 100;
-        return `${occupancyRate.toFixed(0)}%`;
+        return (activeResidentsCount / totalRooms) * 100;
+    };
+
+    const getMonthlyOccupancyRate = (): number => {
+        return calculateOccupancyRate('Mensuel');
     };
 
     const StatOccupationContent: React.FC<{period: Period, residents: Resident[]}> = ({ period, residents }) => {
-        const occupancyValue = calculateOccupancy(period);
-        const color = occupancyValue === '100%' ? 'text-[#006561]' : 'text-orange-600'; // Example color logic
+        const occupancyValue = calculateOccupancyRate(period);
+        const color = occupancyValue === 100 ? 'text-[#006561]' : 'text-orange-600'; // Example color logic
         return (
-            <p className={`text-xl sm:text-2xl font-bold ${color}`}>{occupancyValue} <span className="text-xs sm:text-sm font-normal text-gray-500">{period}</span></p>
+            <p className={`text-xl sm:text-2xl font-bold ${color}`}>{occupancyValue.toFixed(0)}% <span className="text-xs sm:text-sm font-normal text-gray-500">{period}</span></p>
         );
     };
 
@@ -103,13 +106,26 @@ const OccupancyCard: React.FC<OccupancyCardProps> = ({ residents }) => {
     );
 
     return (
-        <StatCard
-            icon={Users}
-            title="Taux d'occupation"
-            content={<StatOccupationContent period={period} residents={residents} />}
-            color="green"
-            titleAction={titleAction}
-        />
+        <div>
+            <StatCard
+                icon={Users}
+                title="Taux d'occupation"
+                content={<StatOccupationContent period={period} residents={residents} />}
+                color="green"
+                titleAction={titleAction}
+            />
+            {period === 'Mensuel' && getMonthlyOccupancyRate() < 80 && (
+                <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM10 13a1 1 0 100-2 1 1 0 000 2zm0-6a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                    </svg>
+                    <div>
+                        <p className="font-bold">Alerte : Taux d'occupation faible</p>
+                        <p className="text-sm mt-1">Le taux d'occupation mensuel est inférieur à 80%. Pensez à contacter les prestataires.</p>
+                    </div>
+                </div>
+            )}
+        </div>
     );
 };
 

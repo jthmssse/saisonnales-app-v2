@@ -32,12 +32,13 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
         dietaryNeeds: '',
         socialHabits: '',
         // Ajout des valeurs par défaut pour les champs optionnels pour éviter undefined
-        gender: '',
+        gender: undefined,
         birthDate: '',
         address: '',
         familyContactRelation: '',
         notes: '',
         documents: [],
+        imageRights: 'non', // Ajout de la propriété imageRights
     });
     const [errors, setErrors] = useState<Partial<Record<keyof NewReservationData, string>>>({});
 
@@ -215,7 +216,7 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
                         <button type="button" onClick={onClose} className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                             Annuler
                         </button>
-                        <button type="button" onClick={handleSubmit} className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <button type="button" onClick={handleSubmit} className="px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-lg shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                             Valider la réservation
                         </button>
                     </div>
