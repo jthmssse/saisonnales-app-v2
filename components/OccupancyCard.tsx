@@ -47,17 +47,25 @@ const OccupancyCard: React.FC<OccupancyCardProps> = ({ residents }) => {
             }).length;
         } else if (p === 'Mensuel') {
             const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-            startOfMonth.setHours(0, 0, 0, 0);
             const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-            endOfMonth.setHours(23, 59, 59, 999);
+            const daysInMonth = endOfMonth.getDate();
+            let totalOccupiedDays = 0;
 
-            activeResidentsCount = residents.filter(r => {
-                const arrival = new Date(r.arrival);
-                const departure = new Date(r.departure);
-                arrival.setHours(0, 0, 0, 0);
-                departure.setHours(0, 0, 0, 0);
-                return (arrival <= endOfMonth && departure >= startOfMonth);
-            }).length;
+            for (let day = 1; day <= daysInMonth; day++) {
+                const currentDay = new Date(today.getFullYear(), today.getMonth(), day);
+                currentDay.setHours(0, 0, 0, 0);
+
+                const occupiedRoomsToday = residents.filter(r => {
+                    const arrival = new Date(r.arrival);
+                    const departure = new Date(r.departure);
+                    arrival.setHours(0, 0, 0, 0);
+                    departure.setHours(0, 0, 0, 0);
+                    return (arrival <= currentDay && departure >= currentDay);
+                }).length;
+                totalOccupiedDays += occupiedRoomsToday;
+            }
+            // Calculate average daily occupancy for the month
+            activeResidentsCount = totalOccupiedDays / daysInMonth;
         }
 
         const occupancyRate = (activeResidentsCount / totalRooms) * 100;
