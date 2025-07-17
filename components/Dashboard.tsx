@@ -41,14 +41,19 @@ export default function Dashboard({ onSelectResident, residents, planningData, s
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6">
-        <OccupancyCard />
+        <OccupancyCard residents={residents} />
         {/* GIR moyen */}
         <StatCard
           icon={Clock}
           title="GIR moyen"
           content={<p className="text-2xl font-bold text-[#006561]">{
             (() => {
-              const girs = residents.map(r => parseInt((r.gir || '').replace(/\D/g, ''))).filter(n => !isNaN(n));
+              const girs = residents.map(r => {
+                const girValue = parseInt((r.gir || '').replace(/\D/g, ''));
+                // GIR values are typically 1 to 6. Filter out invalid GIRs.
+                return (girValue >= 1 && girValue <= 6) ? girValue : NaN;
+              }).filter(n => !isNaN(n));
+
               if (!girs.length) return 'N/A';
               return (girs.reduce((a, b) => a + b, 0) / girs.length).toFixed(2);
             })()
