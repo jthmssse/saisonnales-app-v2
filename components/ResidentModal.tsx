@@ -37,6 +37,8 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
   const [editGir, setEditGir] = useState(resident.gir);
   const [editArrival, setEditArrival] = useState(formatDateInput(resident.arrival));
   const [editDeparture, setEditDeparture] = useState(formatDateInput(resident.departure));
+  const [editBirthDate, setEditBirthDate] = useState(formatDateInput(resident.birthDate));
+  const [editImageRights, setEditImageRights] = useState(resident.imageRights);
   const [documents, setDocuments] = useState(resident.documents || []);
 
   // Ajout de pièce jointe
@@ -76,6 +78,14 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
     setEditDeparture(e.target.value);
   };
 
+  const handleBirthDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditBirthDate(e.target.value);
+  };
+
+  const handleImageRightsChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setEditImageRights(e.target.value as 'oui' | 'non' | 'oui sauf réseaux sociaux');
+  };
+
   const handleSave = () => {
     const updatedResident: Resident = {
       ...resident,
@@ -83,6 +93,8 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
       gir: editGir,
       arrival: editArrival,
       departure: editDeparture,
+      birthDate: editBirthDate,
+      imageRights: editImageRights,
       documents: documents,
     };
     onUpdateResident(updatedResident);
@@ -155,6 +167,27 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
                   value={editDeparture}
                   onChange={handleDepartureChange}
                 />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Date de naissance</label>
+                <input
+                  type="date"
+                  className="w-full border rounded px-2 py-1 text-sm"
+                  value={editBirthDate}
+                  onChange={handleBirthDateChange}
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Droit à l'image</label>
+                <select
+                  className="w-full border rounded px-2 py-1 text-sm"
+                  value={editImageRights}
+                  onChange={handleImageRightsChange}
+                >
+                  <option value="oui">Oui</option>
+                  <option value="non">Non</option>
+                  <option value="oui sauf réseaux sociaux">Oui sauf réseaux sociaux</option>
+                </select>
               </div>
             </div>
           </div>

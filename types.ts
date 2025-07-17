@@ -22,6 +22,7 @@ export interface Resident {
   phone: string;
   docsComplete: boolean;
   devisEnvoye: boolean;
+  imageRights: 'oui' | 'non' | 'oui sauf réseaux sociaux';
   
   // Optional fields for form
   gender?: 'Homme' | 'Femme' | 'Autre';
