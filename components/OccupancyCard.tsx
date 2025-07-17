@@ -107,14 +107,6 @@ const OccupancyCard: React.FC<OccupancyCardProps> = ({ residents }) => {
 
     return (
         <div className="flex flex-col">
-            <div className="flex justify-end mb-4"> {/* Container for the new button */}
-                <button className="px-4 py-2 rounded-lg text-white font-bold bg-[#cc5500] hover:bg-[#b34b00] flex items-center text-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l.684-.275a1 1 0 001.086.342l2.545 1.137a1 1 0 001.046 0l2.545-1.137a1 1 0 001.086-.342l.684.275a1 1 0 001.169-1.409l-7-14z" />
-                    </svg>
-                    Contacter les prestataires
-                </button>
-            </div>
             <StatCard
                 icon={Users}
                 title="Taux d'occupation"

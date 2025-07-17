@@ -130,9 +130,9 @@ export default function Dashboard({ onSelectResident, residents, planningData, s
           <TrendingDown className="w-4 h-4 sm:w-5 sm:h-5 text-red-500" />
           <h2 className="text-base sm:text-lg font-semibold text-gray-800">Prévisions d'Occupation Faible</h2>
         </div>
-        <div className="bg-red-50 rounded-lg p-3 sm:p-4 flex flex-col">
-          <p className="font-semibold text-red-800 text-sm sm:text-base">Du 30 juin au 27 septembre 2025</p>
-          <a href={`mailto:${PRESTATAIRES_EMAIL}?subject=Contact%20concernant%20le%20taux%20d'occupation%20faible`} className="mt-4 bg-red-600 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg hover:bg-red-700 text-xs sm:text-sm font-medium whitespace-nowrap flex items-center gap-2 transition-colors shadow-sm hover:shadow-md self-start">
+        <div className="bg-[#ffffd4] rounded-lg p-3 sm:p-4 flex flex-col">
+          <p className="font-semibold text-[#cc5500] text-sm sm:text-base">Du 30 juin au 27 septembre 2025</p>
+          <a href={`mailto:${PRESTATAIRES_EMAIL}?subject=Contact%20concernant%20le%20taux%20d'occupation%20faible`} className="mt-4 bg-[#cc5500] text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg hover:bg-[#e66600] text-xs sm:text-sm font-medium whitespace-nowrap flex items-center gap-2 transition-colors shadow-sm hover:shadow-md self-start">
             <Send size={14} className="sm:w-4 sm:h-4"/> Contacter les prestataires
           </a>
         </div>
