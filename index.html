@@ -9,5 +9,33 @@
   <body class="bg-gray-50">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
+    <form name="new-reservation" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="name" />
+      <input type="text" name="room" />
+      <input type="text" name="gir" />
+      <input type="date" name="arrival" />
+      <input type="date" name="departure" />
+      <input type="tel" name="phone" />
+      <input type="checkbox" name="docsComplete" />
+      <input type="checkbox" name="devisEnvoye" />
+      <input type="text" name="familyContactName" />
+      <input type="email" name="email" />
+      <textarea name="allergies"></textarea>
+      <textarea name="medicalHistory"></textarea>
+      <input type="text" name="treatingDoctor" />
+      <input type="text" name="mobility" />
+      <textarea name="dietaryNeeds"></textarea>
+      <textarea name="socialHabits"></textarea>
+      <input type="text" name="gender" />
+      <input type="date" name="birthDate" />
+      <input type="text" name="address" />
+      <input type="text" name="familyContactRelation" />
+      <textarea name="notes"></textarea>
+      <input type="text" name="imageRights" />
+      <input type="hidden" name="form-name" value="new-reservation" />
+      <div hidden>
+        <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+      </div>
+    </form>
   </body>
 </html>
