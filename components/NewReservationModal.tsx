@@ -108,7 +108,10 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
             return;
         }
 
-        // Netlify form submission
+        // Appel local pour affichage du message de confirmation
+        onSave(formData);
+
+        // Netlify form submission (pour workflow)
         fetch("/", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -116,7 +119,6 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
         })
         .then(() => {
             setShowSuccessMessage(true);
-            onSave(formData); // Call onSave to update the parent component's state
         })
         .catch((error) => alert(error));
     };
