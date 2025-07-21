@@ -41,6 +41,7 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
         imageRights: 'non', // Ajout de la propriété imageRights
     });
     const [errors, setErrors] = useState<Partial<Record<keyof NewReservationData, string>>>({});
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
     const availableRooms = useMemo(() => {
         const totalRooms = Array.from({ length: 24 }, (_, i) => String(i + 1));
@@ -107,7 +108,18 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
             return;
         }
 
-        onSave(formData);
+        // Netlify form submission
+        fetch("/", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams(Object.entries(formData).map(([key, value]) => [key, String(value)])).toString(),
+        })
+        .then(() => {
+            setShowSuccessMessage(true);
+            // Optionally, you can still call onSave if you want to update the parent component's state
+            // onSave(formData);
+        })
+        .catch((error) => alert(error));
     };
 
     useEffect(() => {
