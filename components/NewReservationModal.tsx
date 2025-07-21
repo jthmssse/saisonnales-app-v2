@@ -93,7 +93,8 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
         }
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = (event: React.FormEvent) => {
+        event.preventDefault(); // Prevent default form submission
         const newErrors: Partial<Record<keyof NewReservationData, string>> = {};
         if (!formData.name) newErrors.name = "Le nom complet est requis.";
         if (!formData.arrival) newErrors.arrival = "La date d'arrivée est requise.";
@@ -135,9 +136,13 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
                     </div>
                 </div>
 
-                <div className="p-4 sm:p-5 space-y-4 overflow-y-auto modal-scrollbar">
+                <form name="new-reservation" method="POST" data-netlify="true" netlify-honeypot="bot-field" onSubmit={handleSubmit} className="p-4 sm:p-5 space-y-4 overflow-y-auto modal-scrollbar">
+                    <input type="hidden" name="form-name" value="new-reservation" />
+                    <div hidden>
+                        <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+                    </div>
                     <Section icon={User} title="Informations Résident">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">                           
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <FormInput label="Nom complet" name="name" value={formData.name || ''} onChange={handleChange} placeholder="ex: Jean Dupont" isRequired error={errors.name} />
                             <FormSelect label="GIR" name="gir" value={formData.gir || ''} onChange={handleChange} isRequired error={errors.gir}>
                                 <option value="">Sélectionner...</option>
@@ -209,14 +214,15 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
                              </label>
                          </div>
                     </Section>
-                </div>
+-------
+                </form>
 
                 <div className="sticky bottom-0 bg-gray-50/80 backdrop-blur-sm p-4 border-t mt-auto">
                     <div className="flex justify-end gap-3">
                         <button type="button" onClick={onClose} className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                             Annuler
                         </button>
-                        <button type="button" onClick={handleSubmit} className="px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-lg shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                        <button type="submit" className="px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-lg shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                             Valider la réservation
                         </button>
                     </div>
