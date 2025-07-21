@@ -95,7 +95,7 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
     };
 
     const handleSubmit = (event: React.FormEvent) => {
-        event.preventDefault(); // Prevent default form submission
+        // Validation JS avant soumission native
         const newErrors: Partial<Record<keyof NewReservationData, string>> = {};
         if (!formData.name) newErrors.name = "Le nom complet est requis.";
         if (!formData.arrival) newErrors.arrival = "La date d'arrivée est requise.";
@@ -104,23 +104,14 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
         if (!formData.gir) newErrors.gir = "Le GIR est requis.";
 
         if (Object.keys(newErrors).length > 0) {
+            event.preventDefault();
             setErrors(newErrors);
             return;
         }
 
         // Appel local pour affichage du message de confirmation
         onSave(formData);
-
-        // Netlify form submission (pour workflow)
-        fetch("/", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: new URLSearchParams(Object.entries(formData).map(([key, value]) => [key, String(value)])).toString(),
-        })
-        .then(() => {
-            setShowSuccessMessage(true);
-        })
-        .catch((error) => alert(error));
+        // NE PAS empêcher la soumission native Netlify (pas de event.preventDefault)
     };
 
     useEffect(() => {
