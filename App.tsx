@@ -1,4 +1,3 @@
-  const [confirmationMessage, setConfirmationMessage] = useState<string | null>(null);
 import React, { useState, useCallback, useEffect } from 'react';
 import { ActiveTab, Resident, NewReservationData } from './types';
 import { RESIDENTS } from './constants';
@@ -20,6 +19,7 @@ const App: React.FC = () => {
   const [selectedResident, setSelectedResident] = useState<Resident | null>(null);
   const [isNewReservationModalOpen, setNewReservationModalOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [confirmationMessage, setConfirmationMessage] = useState<string | null>(null);
 
   // Charge les données depuis le localStorage une seule fois au montage du composant (côté client)
   useEffect(() => {
