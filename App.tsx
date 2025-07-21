@@ -192,6 +192,12 @@ const App: React.FC = () => {
           residents={residents}
         />
       )}
+
+      {confirmationMessage && (
+        <div className="fixed top-20 right-8 bg-green-100 text-green-800 px-6 py-3 rounded shadow-lg z-50">
+          {confirmationMessage}
+        </div>
+      )}
     </div>
   );
 };
