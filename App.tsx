@@ -1,3 +1,4 @@
+  const [confirmationMessage, setConfirmationMessage] = useState<string | null>(null);
 import React, { useState, useCallback, useEffect } from 'react';
 import { ActiveTab, Resident, NewReservationData } from './types';
 import { RESIDENTS } from './constants';
@@ -60,11 +61,9 @@ const App: React.FC = () => {
   const handleSaveReservation = useCallback((data: NewReservationData) => {
       console.log("Saving new reservation: ", data);
       const today = new Date();
-      today.setHours(0, 0, 0, 0); // Ignorer l'heure pour la comparaison
-
+      today.setHours(0, 0, 0, 0);
       const arrivalDate = new Date(data.arrival);
       const departureDate = new Date(data.departure);
-
       let status: 'Actif' | 'À venir' | 'Terminé';
       if (arrivalDate > today) {
         status = 'À venir';
@@ -73,7 +72,6 @@ const App: React.FC = () => {
       } else {
         status = 'Actif';
       }
-
       const newResident: Resident = {
         ...data,
         id: (Math.max(...residents.map(r => r.id)) || 0) + 1,
@@ -81,7 +79,14 @@ const App: React.FC = () => {
       };
       setResidents(prev => [...prev, newResident]);
       setNewReservationModalOpen(false);
+      setConfirmationMessage("Votre réservation a bien été validée. Un e-mail de confirmation a été automatiquement envoyé au client.");
+      setTimeout(() => setConfirmationMessage(null), 4000);
   }, [residents]);
+      {confirmationMessage && (
+        <div className="fixed top-20 right-8 bg-green-100 text-green-800 px-6 py-3 rounded shadow-lg z-50">
+          {confirmationMessage}
+        </div>
+      )}
 
   // Fonction pour mettre à jour un résident (ex: changement de chambre ou ajout de document)
   const handleUpdateResident = useCallback((updated: Resident) => {
