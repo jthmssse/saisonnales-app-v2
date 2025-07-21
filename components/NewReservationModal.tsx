@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
+import { X, User, Calendar, Stethoscope, HeartPulse, Phone, FileText, Plus, CheckCircle } from 'lucide-react';
 import { NewReservationData, Resident } from '../types';
 import FormInput from './FormInput';
 import FormTextArea from './FormTextArea';
