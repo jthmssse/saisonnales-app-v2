@@ -108,18 +108,13 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
             return;
         }
 
-        // Netlify form submission
-        fetch("/", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: new URLSearchParams(Object.entries(formData).map(([key, value]) => [key, String(value)])).toString(),
-        })
-        .then(() => {
-            setShowSuccessMessage(true);
-            // Optionally, you can still call onSave if you want to update the parent component's state
-            // onSave(formData);
-        })
-        .catch((error) => alert(error));
+        onSave(formData); // Call onSave to update parent component's state
+
+        // Show success message and close modal after a delay
+        setShowSuccessMessage(true);
+        setTimeout(() => {
+            onClose();
+        }, 3000); // Close after 3 seconds
     };
 
     useEffect(() => {
