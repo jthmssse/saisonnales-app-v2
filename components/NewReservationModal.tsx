@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { X, User, Calendar, Stethoscope, HeartPulse, Phone, FileText, Plus } from 'lucide-react';
 import { NewReservationData, Resident } from '../types';
 import FormInput from './FormInput';
 import FormTextArea from './FormTextArea';
@@ -108,13 +107,17 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
             return;
         }
 
-        onSave(formData); // Call onSave to update parent component's state
-
-        // Show success message and close modal after a delay
-        setShowSuccessMessage(true);
-        setTimeout(() => {
-            onClose();
-        }, 3000); // Close after 3 seconds
+        // Netlify form submission
+        fetch("/", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams(Object.entries(formData).map(([key, value]) => [key, String(value)])).toString(),
+        })
+        .then(() => {
+            setShowSuccessMessage(true);
+            onSave(formData); // Call onSave to update the parent component's state
+        })
+        .catch((error) => alert(error));
     };
 
     useEffect(() => {
@@ -221,7 +224,6 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
                              </label>
                          </div>
                     </Section>
--------
                 </form>
 
                 <div className="sticky bottom-0 bg-gray-50/80 backdrop-blur-sm p-4 border-t mt-auto">
