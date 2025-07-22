@@ -119,10 +119,17 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
             return;
         }
 
+        // Reconstruit le champ name pour l'affichage du planning et des fiches
+        const formDataWithName = {
+            ...formData,
+            name: `${formData.firstName || ''} ${formData.lastName || ''}`.trim(),
+            email: formData.Email || '',
+        };
+
         // Construction des données du formulaire pour Netlify
         const data = new FormData();
         data.append('form-name', 'new-reservation');
-        Object.entries(formData).forEach(([key, value]) => {
+        Object.entries(formDataWithName).forEach(([key, value]) => {
             if (Array.isArray(value)) {
                 value.forEach((v, i) => data.append(`${key}[${i}]`, v));
             } else {
@@ -139,7 +146,7 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
             });
             // Ajoute le nouveau résident dans l'app (synchronisation avec le parent)
             if (typeof onSave === 'function') {
-                onSave(formData);
+                onSave(formDataWithName);
             }
             setShowSuccessMessage(true);
             setTimeout(() => setShowSuccessMessage(false), 4000);
