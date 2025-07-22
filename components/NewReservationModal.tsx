@@ -108,10 +108,8 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
             setErrors(newErrors);
             return;
         }
-
-        // Appel local pour affichage du message de confirmation
-        onSave(formData);
-        // NE PAS empêcher la soumission native Netlify (pas de event.preventDefault)
+        // NE PAS fermer la modale ni afficher le message JS ici : laisser Netlify gérer la soumission native
+        // La confirmation JS et la fermeture seront gérées sur la page de remerciement Netlify ou via un callback
     };
 
     useEffect(() => {
