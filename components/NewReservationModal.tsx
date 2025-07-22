@@ -19,7 +19,6 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
         firstName: '',
         lastName: '',
         Email: '',
-        name: '',
         room: '',
         gir: '',
         arrival: '',
@@ -102,7 +101,8 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
         event.preventDefault();
         // Validation JS avant soumission AJAX
         const newErrors: Partial<Record<keyof NewReservationData, string>> = {};
-        if (!formData.name) newErrors.name = "Le nom complet est requis.";
+        if (!formData.firstName) newErrors.firstName = "Le prénom est requis.";
+        if (!formData.lastName) newErrors.lastName = "Le nom est requis.";
         if (!formData.arrival) newErrors.arrival = "La date d'arrivée est requise.";
         if (!formData.departure) newErrors.departure = "La date de départ est requise.";
         if (!formData.room) newErrors.room = "Le numéro de chambre est requis.";
