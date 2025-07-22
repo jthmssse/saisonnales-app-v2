@@ -14,6 +14,9 @@ export interface Document {
 export interface Resident {
   id: number;
   name: string;
+  firstName?: string;
+  lastName?: string;
+  Email?: string;
   room: string;
   gir: string;
   status: 'Actif' | 'À venir' | 'Terminé';
@@ -33,6 +36,7 @@ export interface Resident {
   familyContactRelation?: string;
   familyContactPhone?: string;
   familyContactEmail?: string;
+  contactEmail?: string;
   
   // New fields for comprehensive care
   allergies?: string; // e.g., "Pollen, Pénicilline, Fruits à coque"
