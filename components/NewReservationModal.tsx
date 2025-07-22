@@ -155,6 +155,9 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
                                     <option key={g} value={`GIR ${g}`}>GIR {g}</option>
                                 ))}
                             </FormSelect>
+                            <FormInput label="Adresse e-mail" name="email" value={formData.email || ''} onChange={handleChange} placeholder="ex: jean.dupont@email.fr" type="email" />
+                            <FormInput label="Téléphone" name="phone" value={formData.phone || ''} onChange={handleChange} placeholder="ex: 0612345678" type="tel" />
+                            <FormInput label="Adresse postale" name="address" value={formData.address || ''} onChange={handleChange} placeholder="ex: 12 rue des Fleurs, 75000 Paris" />
                         </div>
                     </Section>
 
