@@ -84,16 +84,22 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement >) => {
         const { name, value, type } = e.target;
+        // Mapping pour les champs avec espaces
+        let key = name;
+        if (name === 'First Name') key = 'firstName';
+        if (name === 'Last Name') key = 'lastName';
+        if (name === 'Contact Email') key = 'contactEmail';
+
         // Efface l'erreur du champ en cours de modification
-        if (errors[name as keyof NewReservationData]) {
-            setErrors(prev => ({ ...prev, [name]: undefined }));
+        if (errors[key as keyof NewReservationData]) {
+            setErrors(prev => ({ ...prev, [key]: undefined }));
         }
 
         if (type === 'checkbox') {
             const { checked } = e.target as HTMLInputElement;
-            setFormData(prev => ({ ...prev, [name]: checked }));
+            setFormData(prev => ({ ...prev, [key]: checked }));
         } else {
-            setFormData(prev => ({ ...prev, [name]: value }));
+            setFormData(prev => ({ ...prev, [key]: value }));
         }
     };
 
