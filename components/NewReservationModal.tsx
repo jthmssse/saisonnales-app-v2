@@ -15,6 +15,10 @@ interface NewReservationModalProps {
 
 const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSave, residents }) => {
     const [formData, setFormData] = useState<NewReservationData>({
+        // Champs conformes Make/Netlify
+        firstName: '',
+        lastName: '',
+        Email: '',
         name: '',
         room: '',
         gir: '',
@@ -187,7 +191,9 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
                     </div>
                     <Section icon={User} title="Informations Résident">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <FormInput label="Nom complet" name="name" value={formData.name || ''} onChange={handleChange} placeholder="ex: Jean Dupont" isRequired error={errors.name} />
+                            <FormInput label="Prénom" name="First Name" value={formData.firstName || ''} onChange={handleChange} placeholder="ex: Jean" isRequired error={errors.firstName} />
+                            <FormInput label="Nom" name="Last Name" value={formData.lastName || ''} onChange={handleChange} placeholder="ex: Dupont" isRequired error={errors.lastName} />
+                            <FormInput label="Adresse e-mail" name="Email" value={formData.Email || ''} onChange={handleChange} placeholder="ex: jean.dupont@email.fr" type="email" isRequired error={errors.Email} />
                             <FormSelect label="GIR" name="gir" value={formData.gir || ''} onChange={handleChange} isRequired error={errors.gir}>
                                 <option value="">Sélectionner...</option>
                                 {/* Génère dynamiquement les options pour les GIR de 1 à 6 */}
@@ -195,7 +201,6 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
                                     <option key={g} value={`GIR ${g}`}>GIR {g}</option>
                                 ))}
                             </FormSelect>
-                            <FormInput label="Adresse e-mail" name="email" value={formData.email || ''} onChange={handleChange} placeholder="ex: jean.dupont@email.fr" type="email" />
                             <FormInput label="Téléphone" name="phone" value={formData.phone || ''} onChange={handleChange} placeholder="ex: 0612345678" type="tel" />
                             <FormInput label="Adresse postale" name="address" value={formData.address || ''} onChange={handleChange} placeholder="ex: 12 rue des Fleurs, 75000 Paris" />
                         </div>
@@ -245,7 +250,7 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                            <FormInput label="Nom du contact" name="familyContactName" value={formData.familyContactName || ''} onChange={handleChange} placeholder="ex: Martine Dupont"/>
                            <FormInput label="Téléphone" name="phone" value={formData.phone || ''} onChange={handleChange} placeholder="ex: 0612345678" />
-                           <FormInput label="Email" name="email" value={formData.email || ''} onChange={handleChange} placeholder="ex: contact@famille.fr" type="email" />
+                           <FormInput label="Email (contact)" name="Contact Email" value={formData.contactEmail || ''} onChange={handleChange} placeholder="ex: contact@famille.fr" type="email" />
                         </div>
                     </Section>
 
