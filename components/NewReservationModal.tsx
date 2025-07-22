@@ -94,8 +94,9 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
         }
     };
 
-    const handleSubmit = (event: React.FormEvent) => {
-        // Validation JS avant soumission native
+    const handleSubmit = async (event: React.FormEvent) => {
+        event.preventDefault();
+        // Validation JS avant soumission AJAX
         const newErrors: Partial<Record<keyof NewReservationData, string>> = {};
         if (!formData.name) newErrors.name = "Le nom complet est requis.";
         if (!formData.arrival) newErrors.arrival = "La date d'arrivée est requise.";
@@ -104,11 +105,38 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
         if (!formData.gir) newErrors.gir = "Le GIR est requis.";
 
         if (Object.keys(newErrors).length > 0) {
-            event.preventDefault();
             setErrors(newErrors);
             return;
         }
-        // NE PAS fermer la modale ici, laisser Netlify gérer la soumission native
+
+        // Construction des données du formulaire pour Netlify
+        const data = new FormData();
+        data.append('form-name', 'new-reservation');
+        Object.entries(formData).forEach(([key, value]) => {
+            if (Array.isArray(value)) {
+                value.forEach((v, i) => data.append(`${key}[${i}]`, v));
+            } else {
+                data.append(key, value ?? '');
+            }
+        });
+
+        // Envoi AJAX vers Netlify
+        try {
+            await fetch('/', {
+                method: 'POST',
+                body: data,
+                headers: { 'Accept': 'application/x-www-form-urlencoded' },
+            });
+            // Ajoute le nouveau résident dans l'app (synchronisation avec le parent)
+            if (typeof onSave === 'function') {
+                onSave(formData);
+            }
+            setShowSuccessMessage(true);
+            setTimeout(() => setShowSuccessMessage(false), 4000);
+            onClose();
+        } catch (err) {
+            setErrors({ name: "Erreur lors de l'envoi du formulaire. Veuillez réessayer." });
+        }
     };
 
     // Ajoute un effet pour intercepter la soumission réussie et fermer la modale + afficher le message
@@ -152,7 +180,7 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
                     </div>
                 </div>
 
-                <form name="new-reservation" method="POST" data-netlify="true" netlify-honeypot="bot-field" onSubmit={handleSubmit} className="p-4 sm:p-5 space-y-4 overflow-y-auto modal-scrollbar">
+                <form name="new-reservation" data-netlify="true" netlify-honeypot="bot-field" onSubmit={handleSubmit} className="p-4 sm:p-5 space-y-4 overflow-y-auto modal-scrollbar">
                     <input type="hidden" name="form-name" value="new-reservation" />
                     <div hidden>
                         <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
