@@ -20,6 +20,19 @@ const App: React.FC = () => {
   const [isNewReservationModalOpen, setNewReservationModalOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [confirmationMessage, setConfirmationMessage] = useState<string | null>(null);
+  // Ajoute un effet pour afficher le message après soumission native Netlify
+  useEffect(() => {
+    const handler = (event) => {
+      // Vérifie que l'événement concerne le bon formulaire
+      const form = document.forms['new-reservation'];
+      if (form && event.target === form) {
+        setConfirmationMessage("Votre réservation a bien été validée et un e-mail de confirmation a été envoyé automatiquement au client.");
+        setTimeout(() => setConfirmationMessage(null), 4000);
+      }
+    };
+    window.addEventListener('submit', handler, true);
+    return () => window.removeEventListener('submit', handler, true);
+  }, []);
 
   // Charge les données depuis le localStorage une seule fois au montage du composant (côté client)
   useEffect(() => {

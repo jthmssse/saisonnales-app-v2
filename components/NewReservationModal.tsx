@@ -108,9 +108,23 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
             setErrors(newErrors);
             return;
         }
-        // NE PAS fermer la modale ni afficher le message JS ici : laisser Netlify gérer la soumission native
-        // La confirmation JS et la fermeture seront gérées sur la page de remerciement Netlify ou via un callback
+        // NE PAS fermer la modale ici, laisser Netlify gérer la soumission native
     };
+
+    // Ajoute un effet pour intercepter la soumission réussie et fermer la modale + afficher le message
+    useEffect(() => {
+        const handler = (event: Event) => {
+            // Vérifie que l'événement concerne le bon formulaire
+            const form = document.forms['new-reservation'];
+            if (form && event.target === form) {
+                // Ferme la modale et affiche le message de confirmation
+                onClose();
+                // Optionnel : tu peux déclencher une confirmation JS ici si besoin
+            }
+        };
+        window.addEventListener('submit', handler, true);
+        return () => window.removeEventListener('submit', handler, true);
+    }, [onClose]);
 
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
