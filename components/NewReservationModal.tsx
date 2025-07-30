@@ -27,7 +27,6 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
         docsComplete: false,
         devisEnvoye: false,
         familyContactName: '',
-        email: '',
         allergies: '',
         medicalHistory: '',
         treatingDoctor: '',
