@@ -123,7 +123,6 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
         const formDataWithName = {
             ...formData,
             name: `${formData.firstName || ''} ${formData.lastName || ''}`.trim(),
-            email: formData.Email || '',
         };
 
         // Construction des données du formulaire pour Netlify
