@@ -14,17 +14,13 @@ const StatCard: React.FC<StatCardProps> = ({ icon: Icon, title, content, color =
   const iconColor = colorClasses[color as keyof typeof colorClasses] || colorClasses.gray;
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border p-5">
-        <div className="flex justify-between items-center mb-4">
-             <div className={`p-2 rounded-lg ${iconColor}`}>
-                <Icon className={`w-6 h-6`} />
-            </div>
-            {titleAction && <div>{titleAction}</div>}
-        </div>
-      <div>
-        <p className="text-sm text-gray-500 mb-1 font-medium">{title}</p>
-        {content}
+    <div className={`rounded-lg shadow-sm bg-white p-4 flex flex-col gap-2 border border-gray-100`}>
+      <div className="flex items-center gap-2">
+        {Icon && <Icon className="w-5 h-5 text-gray-400" />}
+        <span className="font-semibold text-gray-700 flex-1">{title}</span>
+        {titleAction}
       </div>
+      <div className={`text-2xl font-bold ${title.includes('Durée Moyenne') ? 'text-[#16a34a]' : color === 'green' ? 'text-[#16a34a]' : color === 'orange' ? 'text-orange-500' : color === 'emerald' ? 'text-emerald-500' : 'text-gray-700'}`}>{content}</div>
     </div>
   );
 };

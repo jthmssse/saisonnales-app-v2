@@ -25,7 +25,7 @@ const CommunicationsView: React.FC = () => {
             <div key={comm.id} className="bg-white rounded-lg shadow-sm border p-6 flex flex-col">
               <div className="flex items-center justify-between mb-3">
                 <h4 className="font-semibold text-gray-800">{comm.type}</h4>
-                <span className="text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded-full font-medium">{comm.status}</span>
+                <span className="text-xs text-[#cc5500] bg-[#cc5500] bg-opacity-10 px-2 py-1 rounded-full font-medium">{comm.status}</span>
               </div>
               <p className="text-sm text-gray-600 mb-1"><span className="font-medium">Objet :</span> {comm.subject}</p>
               <p className="text-sm text-gray-600 mb-4 flex-grow">{comm.description}</p>

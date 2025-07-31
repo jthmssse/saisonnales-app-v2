@@ -163,7 +163,6 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
                 onChange={handleBirthDateChange}
               />
               <div className="flex items-center gap-2 mt-1">
-                <span>{editBirthDate ? editBirthDate.split('-').reverse().join('/') : 'N/A'}</span>
                 {editBirthDate && (
                   <span className="text-xs text-gray-600">(Âge : {Math.floor((new Date().getTime() - new Date(editBirthDate).getTime()) / (1000 * 60 * 60 * 24 * 365.25))} ans)</span>
                 )}
