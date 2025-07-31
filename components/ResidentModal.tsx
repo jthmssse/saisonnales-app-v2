@@ -151,6 +151,11 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4" onClick={onClose}>
+      <div className="bg-gray-50 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>
+        {/* ...header and other content... */}
+        <div className="p-5 space-y-4 overflow-y-auto modal-scrollbar">
+          {/* ...autres sections... */}
+          <div className="flex gap-2 mb-4">
             <button
               onClick={handleDelete}
               className="px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-lg shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
@@ -169,22 +174,23 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
             >
               <span>Contacter la famille</span>
             </button>
-              <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">Date de naissance</label>
-                <input
-                  type="date"
-                  className="w-full border rounded px-2 py-1 text-sm"
-                  value={editBirthDate}
-                  onChange={handleBirthDateChange}
-                />
-                <div className="flex items-center gap-2 mt-1">
-                  <span>{editBirthDate ? editBirthDate.split('-').reverse().join('/') : 'N/A'}</span>
-                  {editBirthDate && (
-                    <span className="text-xs text-gray-600">(Âge : {Math.floor((new Date().getTime() - new Date(editBirthDate).getTime()) / (1000 * 60 * 60 * 24 * 365.25))} ans)</span>
-                  )}
-                </div>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-6">
+            <div>
+              <label className="block text-xs font-medium text-gray-500 mb-1">Date de naissance</label>
+              <input
+                type="date"
+                className="w-full border rounded px-2 py-1 text-sm"
+                value={editBirthDate}
+                onChange={handleBirthDateChange}
+              />
+              <div className="flex items-center gap-2 mt-1">
+                <span>{editBirthDate ? editBirthDate.split('-').reverse().join('/') : 'N/A'}</span>
+                {editBirthDate && (
+                  <span className="text-xs text-gray-600">(Âge : {Math.floor((new Date().getTime() - new Date(editBirthDate).getTime()) / (1000 * 60 * 60 * 24 * 365.25))} ans)</span>
+                )}
               </div>
-              </div>
+            </div>
               <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1">Chambre</label>
                 <select

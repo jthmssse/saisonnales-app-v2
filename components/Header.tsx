@@ -24,7 +24,7 @@ const Header: React.FC<HeaderProps> = ({ onNewReservationClick, search, onSearch
             <Bell className="w-6 h-6 text-gray-500" />
             <span className="absolute top-2 right-2 block h-1.5 w-1.5 rounded-full bg-red-500 ring-1 ring-white"></span>
           </button>
-          <button onClick={onNewReservationClick} className="bg-[#006663] text-white px-3 py-2 rounded-lg hover:bg-[#005552] flex items-center space-x-2 transition-colors">
+          <button onClick={onNewReservationClick} className="bg-[#16a34a] text-white px-3 py-2 rounded-lg hover:bg-[#15803d] flex items-center space-x-2 transition-colors">
             <Plus className="w-5 h-5" />
             <span className="font-medium hidden sm:inline">Nouvelle Réservation</span> {/* Hide text on small screens */}
           </button>
