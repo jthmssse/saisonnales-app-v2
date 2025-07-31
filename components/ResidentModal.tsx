@@ -169,21 +169,21 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
             >
               <span>Contacter la famille</span>
             </button>
+              <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1">Date de naissance</label>
-                <div className="flex flex-col gap-1">
-                  <input
-                    type="date"
-                    className="w-full border rounded px-2 py-1 text-sm"
-                    value={editBirthDate}
-                    onChange={handleBirthDateChange}
-                  />
-                  <div className="flex items-center gap-2">
-                    <span>{editBirthDate ? editBirthDate.split('-').reverse().join('/') : 'N/A'}</span>
-                    {editBirthDate && (
-                      <span className="text-xs text-gray-600">(Âge : {Math.floor((new Date().getTime() - new Date(editBirthDate).getTime()) / (1000 * 60 * 60 * 24 * 365.25))} ans)</span>
-                    )}
-                  </div>
+                <input
+                  type="date"
+                  className="w-full border rounded px-2 py-1 text-sm"
+                  value={editBirthDate}
+                  onChange={handleBirthDateChange}
+                />
+                <div className="flex items-center gap-2 mt-1">
+                  <span>{editBirthDate ? editBirthDate.split('-').reverse().join('/') : 'N/A'}</span>
+                  {editBirthDate && (
+                    <span className="text-xs text-gray-600">(Âge : {Math.floor((new Date().getTime() - new Date(editBirthDate).getTime()) / (1000 * 60 * 60 * 24 * 365.25))} ans)</span>
+                  )}
                 </div>
+              </div>
               </div>
               <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1">Chambre</label>
