@@ -9,7 +9,7 @@ interface StatusBadgeProps {
 
 const StatusBadge: React.FC<StatusBadgeProps> = ({ isPositive, positiveText, negativeText, negativeColor = 'gray' }) => {
     const positiveClasses = 'text-green-600';
-    const negativeClasses = negativeColor === 'red' ? 'text-[#cc5500]' : 'text-gray-500';
+    const negativeClasses = 'text-[#cc5500]';
 
     return (
         <span className={`font-semibold ${isPositive ? positiveClasses : negativeClasses}`}>
