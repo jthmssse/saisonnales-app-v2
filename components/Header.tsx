@@ -31,7 +31,7 @@ const Header: React.FC<HeaderProps> = ({ onNewReservationClick, search, onSearch
             </button>
           </div>
         </div>
-        <div className="relative w-full xs:w-auto flex-grow max-w-full sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl ml-0 xs:ml-4">
+        <div className="relative w-full xs:w-auto max-w-xs xs:max-w-full sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl ml-0 xs:ml-4">
           <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
           <input
             type="text"
