@@ -151,24 +151,24 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4" onClick={onClose}>
-      <div
-        className="bg-gray-50 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="sticky top-0 bg-gray-50/80 backdrop-blur-sm p-5 border-b z-10">
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-bold text-gray-900">{resident.name}</h2>
-            <button onClick={onClose} className="text-gray-500 hover:text-gray-800 hover:bg-gray-200 rounded-full p-1 transition-colors">
-              <X className="w-5 h-5" />
+            <button
+              onClick={handleDelete}
+              className="px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-lg shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+            >
+              Supprimer le résident
             </button>
-          </div>
-        </div>
-
-        <div className="p-5 space-y-4 overflow-y-auto modal-scrollbar">
-          {/* Main Info */}
-          <div className="bg-white border rounded-lg p-4">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-6">
-              <div>
+            <button
+              onClick={handleSave}
+              className="px-4 py-2 text-sm font-medium text-white bg-[#16a34a] border border-transparent rounded-lg shadow-sm hover:bg-[#15803d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            >
+              <span>Enregistrer les modifications</span>
+            </button>
+            <button
+              onClick={() => window.open(`mailto:${resident.familyContactEmail || ''}`)}
+              className="px-4 py-2 text-sm font-medium text-white bg-[#16a34a] border border-transparent rounded-lg shadow-sm hover:bg-[#15803d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            >
+              <span>Contacter la famille</span>
+            </button>
                 <label className="block text-xs font-medium text-gray-500 mb-1">Date de naissance</label>
                 <div className="flex items-center gap-2">
                   <span>{editBirthDate ? editBirthDate.split('-').reverse().join('/') : 'N/A'}</span>

@@ -14,7 +14,7 @@ const ResidentsView: React.FC<ResidentsViewProps> = ({ onSelectResident, residen
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
         <h2 className="text-xl font-semibold text-gray-800">Liste des Résidents</h2>
-        <button onClick={onNewResidentClick} className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center space-x-2 transition-colors">
+        <button onClick={onNewResidentClick} className="bg-[#16a34a] text-white px-4 py-2 rounded-lg hover:bg-[#15803d] flex items-center space-x-2 transition-colors">
           <Plus className="w-4 h-4" />
           <span>Nouveau Résident</span>
         </button>
