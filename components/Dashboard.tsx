@@ -147,15 +147,7 @@ export default function Dashboard({ onSelectResident, residents, planningData, s
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6">
-      {augustRate < 80 && (
-        <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 rounded-lg p-4 flex items-center gap-3">
-          <AlertTriangle className="w-6 h-6 text-yellow-600" />
-          <div>
-            <p className="font-bold">Alerte : Taux d'occupation faible en août</p>
-            <p className="text-sm mt-1">Le taux d'occupation prévu pour août est de {augustRate}% (inférieur à 80%).</p>
-          </div>
-        </div>
-      )}
+      {/* Message d'alerte déplacé dans Prévisions d'Occupation Faible */}
         <OccupancyCard residents={residents} />
         {/* GIR moyen */}
         <StatCard
@@ -187,7 +179,11 @@ export default function Dashboard({ onSelectResident, residents, planningData, s
           <h2 className="text-base sm:text-lg font-semibold text-gray-800">Prévisions d'Occupation Faible</h2>
         </div>
         <div className="rounded-lg p-1 sm:p-2 flex flex-col">
-          {lowStart && lowEnd ? (
+          {augustRate < 80 ? (
+            <p className="font-semibold text-[#cc5500] text-sm sm:text-base">
+              Le taux d'occupation prévu pour août est de {augustRate}% (inférieur à 80%).
+            </p>
+          ) : lowStart && lowEnd ? (
             <p className="font-semibold text-[#cc5500] text-sm sm:text-base">
               Du {lowStart.toLocaleDateString()} au {lowEnd.toLocaleDateString()}
             </p>
