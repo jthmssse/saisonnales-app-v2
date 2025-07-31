@@ -234,15 +234,6 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">Date de naissance</label>
-                <input
-                  type="date"
-                  className="w-full border rounded px-2 py-1 text-sm"
-                  value={editBirthDate}
-                  onChange={handleBirthDateChange}
-                />
-              </div>
-              <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1">Droit à l'image</label>
                 <select
                   className="w-full border rounded px-2 py-1 text-sm"
