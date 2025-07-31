@@ -152,9 +152,7 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
   return (
     <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4" onClick={onClose}>
       <div className="bg-gray-50 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>
-        {/* ...header and other content... */}
         <div className="p-5 space-y-4 overflow-y-auto modal-scrollbar">
-          {/* ...autres sections... */}
           <div className="flex gap-2 mb-4">
             <button
               onClick={handleDelete}
@@ -191,60 +189,59 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
                 )}
               </div>
             </div>
-              <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">Chambre</label>
-                <select
-                  className="w-full border rounded px-2 py-1 text-sm"
-                  value={editRoom}
-                  onChange={handleRoomChange}
-                >
-                  {Array.from({ length: 24 }, (_, i) => (
-                    <option key={i + 1} value={String(i + 1)}>{i + 1}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">GIR</label>
-                <select
-                  className="w-full border rounded px-2 py-1 text-sm"
-                  value={editGir}
-                  onChange={handleGirChange}
-                >
-                  {Array.from({ length: 6 }, (_, i) => (
-                    <option key={i + 1} value={`GIR ${i + 1}`}>{`GIR ${i + 1}`}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">Arrivée</label>
-                <input
-                  type="date"
-                  className="w-full border rounded px-2 py-1 text-sm"
-                  value={editArrival}
-                  onChange={handleArrivalChange}
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">Départ</label>
-                <input
-                  type="date"
-                  className="w-full border rounded px-2 py-1 text-sm"
-                  value={editDeparture}
-                  onChange={handleDepartureChange}
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">Droit à l'image</label>
-                <select
-                  className="w-full border rounded px-2 py-1 text-sm"
-                  value={editImageRights}
-                  onChange={handleImageRightsChange}
-                >
-                  <option value="oui">Oui</option>
-                  <option value="non">Non</option>
-                  <option value="oui sauf réseaux sociaux">Oui sauf réseaux sociaux</option>
-                </select>
-              </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-500 mb-1">Chambre</label>
+              <select
+                className="w-full border rounded px-2 py-1 text-sm"
+                value={editRoom}
+                onChange={handleRoomChange}
+              >
+                {Array.from({ length: 24 }, (_, i) => (
+                  <option key={i + 1} value={String(i + 1)}>{i + 1}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-500 mb-1">GIR</label>
+              <select
+                className="w-full border rounded px-2 py-1 text-sm"
+                value={editGir}
+                onChange={handleGirChange}
+              >
+                {Array.from({ length: 6 }, (_, i) => (
+                  <option key={i + 1} value={`GIR ${i + 1}`}>{`GIR ${i + 1}`}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-500 mb-1">Arrivée</label>
+              <input
+                type="date"
+                className="w-full border rounded px-2 py-1 text-sm"
+                value={editArrival}
+                onChange={handleArrivalChange}
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-500 mb-1">Départ</label>
+              <input
+                type="date"
+                className="w-full border rounded px-2 py-1 text-sm"
+                value={editDeparture}
+                onChange={handleDepartureChange}
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-500 mb-1">Droit à l'image</label>
+              <select
+                className="w-full border rounded px-2 py-1 text-sm"
+                value={editImageRights}
+                onChange={handleImageRightsChange}
+              >
+                <option value="oui">Oui</option>
+                <option value="non">Non</option>
+                <option value="oui sauf réseaux sociaux">Oui sauf réseaux sociaux</option>
+              </select>
             </div>
           </div>
 
