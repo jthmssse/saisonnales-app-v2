@@ -176,6 +176,12 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
                     <span className="text-xs text-gray-600">(Âge : {Math.floor((new Date().getTime() - new Date(editBirthDate).getTime()) / (1000 * 60 * 60 * 24 * 365.25))} ans)</span>
                   )}
                 </div>
+      <input
+        type="date"
+        className="w-full border rounded px-2 py-1 text-sm"
+        value={editBirthDate}
+        onChange={handleBirthDateChange}
+      />
               </div>
               <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1">Chambre</label>
