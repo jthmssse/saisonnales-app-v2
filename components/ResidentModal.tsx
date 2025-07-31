@@ -150,30 +150,10 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4" onClick={onClose}>
-      <div className="bg-gray-50 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>
-        <div className="p-5 space-y-4 overflow-y-auto modal-scrollbar">
-          <div className="flex gap-2 mb-4">
-            <button
-              onClick={handleDelete}
-              className="px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-lg shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-            >
-              Supprimer le résident
-            </button>
-            <button
-              onClick={handleSave}
-              className="px-4 py-2 text-sm font-medium text-white bg-[#16a34a] border border-transparent rounded-lg shadow-sm hover:bg-[#15803d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-            >
-              <span>Enregistrer les modifications</span>
-            </button>
-            <button
-              onClick={() => window.open(`mailto:${resident.familyContactEmail || ''}`)}
-              className="px-4 py-2 text-sm font-medium text-white bg-[#16a34a] border border-transparent rounded-lg shadow-sm hover:bg-[#15803d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-            >
-              <span>Contacter la famille</span>
-            </button>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-6">
+    <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-2 sm:p-4" onClick={onClose}>
+      <div className="bg-gray-50 rounded-lg w-full max-w-2xl max-h-[95vh] overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>
+        <div className="p-2 sm:p-4 space-y-4 overflow-y-auto modal-scrollbar">
+          <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 gap-x-2 sm:gap-x-4 gap-y-4 sm:gap-y-6">
             <div>
               <label className="block text-xs font-medium text-gray-500 mb-1">Date de naissance</label>
               <input
@@ -403,25 +383,25 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
         </div>
 
         <div className="sticky bottom-0 bg-gray-50/80 backdrop-blur-sm p-4 border-t mt-auto">
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-2 sm:gap-4">
             <button
               onClick={handleDelete}
-              className="bg-red-50 text-red-700 px-4 py-2 rounded-lg hover:bg-red-100 flex items-center space-x-2 transition-colors text-sm font-medium"
+              className="bg-red-50 text-red-700 px-4 py-3 sm:py-2 rounded-lg hover:bg-red-100 flex items-center justify-center space-x-2 transition-colors text-base sm:text-sm font-medium w-full sm:w-auto"
             >
-              <Trash2 className="w-4 h-4" />
+              <Trash2 className="w-5 h-5 sm:w-4 sm:h-4" />
               <span>Supprimer le résident</span>
             </button>
             <button
               onClick={handleSave}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center space-x-2 transition-colors text-sm font-medium"
+              className="bg-[#16a34a] text-white px-4 py-3 sm:py-2 rounded-lg hover:bg-[#15803d] flex items-center justify-center space-x-2 transition-colors text-base sm:text-sm font-medium w-full sm:w-auto"
             >
               <span>Enregistrer les modifications</span>
             </button>
             <a
               href={`tel:${resident.phone}`}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center space-x-2 transition-colors"
+              className="bg-[#16a34a] text-white px-4 py-3 sm:py-2 rounded-lg hover:bg-[#15803d] flex items-center justify-center space-x-2 transition-colors text-base sm:text-sm w-full sm:w-auto"
             >
-              <Phone className="w-4 h-4" />
+              <Phone className="w-5 h-5 sm:w-4 sm:h-4" />
               <span>Contacter la famille</span>
             </a>
           </div>
