@@ -11,8 +11,8 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ onNewReservationClick, search, onSearchChange, onToggleSidebar }) => {
   return (
     <header className="bg-white shadow-sm border-b sticky top-0 z-40">
-      <div className="flex flex-col xs:flex-row items-stretch xs:items-center justify-between gap-2 xs:gap-0 p-2 sm:p-4 h-auto sm:h-[69px] max-w-screen-2xl mx-auto px-2 sm:px-6">
-        <div className="flex items-center justify-between w-full xs:w-auto">
+      <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-2 xs:gap-0 p-2 sm:p-4 h-auto sm:h-[69px] max-w-screen-2xl mx-auto px-2 sm:px-6">
+        <div className="flex flex-row items-center w-full gap-2">
           <button
             className="xs:hidden p-2 hover:bg-gray-100 rounded-full text-gray-500"
             onClick={onToggleSidebar}
@@ -25,21 +25,21 @@ const Header: React.FC<HeaderProps> = ({ onNewReservationClick, search, onSearch
               <Bell className="w-6 h-6 text-gray-500" />
               <span className="absolute top-2 right-2 block h-1.5 w-1.5 rounded-full bg-red-500 ring-1 ring-white"></span>
             </button>
-            <button onClick={onNewReservationClick} className="bg-[#16a34a] text-white px-3 py-2 rounded-lg hover:bg-[#15803d] flex items-center space-x-2 transition-colors text-base sm:text-sm w-full xs:w-auto">
+            <button onClick={onNewReservationClick} className="bg-[#16a34a] text-white px-3 py-2 rounded-lg hover:bg-[#15803d] flex items-center space-x-2 transition-colors text-base sm:text-sm xs:w-auto">
               <Plus className="w-5 h-5" />
               <span className="font-medium hidden sm:inline">Nouvelle Réservation</span>
             </button>
           </div>
-        </div>
-        <div className="relative w-full xs:w-[340px] sm:w-[400px] md:w-[480px] lg:w-[520px] xl:w-[600px] ml-0 xs:ml-4">
-          <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
-          <input
-            type="text"
-            placeholder="Rechercher un résident..."
-            className="pl-10 pr-4 py-3 sm:py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white w-full text-base sm:text-sm"
-            value={search}
-            onChange={e => onSearchChange(e.target.value)}
-          />
+          <div className="relative flex-1 ml-2">
+            <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
+            <input
+              type="text"
+              placeholder="Rechercher un résident..."
+              className="pl-10 pr-4 py-3 sm:py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white w-full text-base sm:text-sm"
+              value={search}
+              onChange={e => onSearchChange(e.target.value)}
+            />
+          </div>
         </div>
       </div>
     </header>

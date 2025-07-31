@@ -1,3 +1,25 @@
+// Ajout du calcul du taux d'occupation pour le mois d'août
+function getAugustOccupancy(residents: Resident[]): number {
+  const year = 2025;
+  const month = 7; // Août (0-indexed)
+  const daysInAugust = 31;
+  let totalOccupied = 0;
+  for (let day = 1; day <= daysInAugust; day++) {
+    const currentDay = new Date(year, month, day);
+    currentDay.setHours(0, 0, 0, 0);
+    const occupiedRooms = residents.filter(r => {
+      const arrival = new Date(r.arrival);
+      const departure = new Date(r.departure);
+      arrival.setHours(0, 0, 0, 0);
+      departure.setHours(0, 0, 0, 0);
+      return arrival <= currentDay && departure >= currentDay;
+    }).length;
+    totalOccupied += occupiedRooms;
+  }
+  const totalPossible = daysInAugust * 24;
+  if (totalPossible === 0) return 0;
+  return Math.ceil((totalOccupied / totalPossible) * 100);
+}
 import React from 'react';
 import { Clock, ArrowRight, TrendingDown, AlertTriangle, Send, ArrowLeft } from 'lucide-react';
 import StatCard from './StatCard';
@@ -120,9 +142,20 @@ export default function Dashboard({ onSelectResident, residents, planningData, s
       (r.familyContactName && r.familyContactName.toLowerCase().includes(s))
     );
   }, [search, residents]);
+  // Calcul du taux d'occupation d'août
+  const augustRate = getAugustOccupancy(residents);
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6">
+      {augustRate < 80 && (
+        <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 rounded-lg p-4 flex items-center gap-3">
+          <AlertTriangle className="w-6 h-6 text-yellow-600" />
+          <div>
+            <p className="font-bold">Alerte : Taux d'occupation faible en août</p>
+            <p className="text-sm mt-1">Le taux d'occupation prévu pour août est de {augustRate}% (inférieur à 80%).</p>
+          </div>
+        </div>
+      )}
         <OccupancyCard residents={residents} />
         {/* GIR moyen */}
         <StatCard

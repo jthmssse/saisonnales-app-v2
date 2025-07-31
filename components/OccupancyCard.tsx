@@ -16,14 +16,18 @@ const OccupancyCard: React.FC<OccupancyCardProps> = ({ residents }) => {
 
     const totalRooms = 24; // Assuming 24 rooms as per planningData in App.tsx
 
+
+    // Calcule le taux d'occupation réel sur la période (jours-chambres occupés / jours-chambres totaux)
     const calculateOccupancyRate = (p: Period): number => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-
-        let activeResidentsCount = 0;
+        let totalOccupied = 0;
+        let totalPossible = 0;
 
         if (p === 'Journalier') {
-            activeResidentsCount = residents.filter(r => {
+            // 1 jour, 24 chambres
+            totalPossible = 24;
+            totalOccupied = residents.filter(r => {
                 const arrival = new Date(r.arrival);
                 const departure = new Date(r.departure);
                 arrival.setHours(0, 0, 0, 0);
@@ -31,44 +35,45 @@ const OccupancyCard: React.FC<OccupancyCardProps> = ({ residents }) => {
                 return arrival <= today && departure >= today;
             }).length;
         } else if (p === 'Hebdomadaire') {
+            // 7 jours, 24 chambres
             const startOfWeek = new Date(today);
             startOfWeek.setDate(today.getDate() - today.getDay()); // Sunday as start of week
             startOfWeek.setHours(0, 0, 0, 0);
-            const endOfWeek = new Date(startOfWeek);
-            endOfWeek.setDate(startOfWeek.getDate() + 6);
-            endOfWeek.setHours(23, 59, 59, 999);
-
-            activeResidentsCount = residents.filter(r => {
-                const arrival = new Date(r.arrival);
-                const departure = new Date(r.departure);
-                arrival.setHours(0, 0, 0, 0);
-                departure.setHours(0, 0, 0, 0);
-                return (arrival <= endOfWeek && departure >= startOfWeek);
-            }).length;
-        } else if (p === 'Mensuel') {
-            const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-            const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-            const daysInMonth = endOfMonth.getDate();
-            let totalOccupiedDays = 0;
-
-            for (let day = 1; day <= daysInMonth; day++) {
-                const currentDay = new Date(today.getFullYear(), today.getMonth(), day);
+            totalPossible = 7 * 24;
+            for (let i = 0; i < 7; i++) {
+                const currentDay = new Date(startOfWeek);
+                currentDay.setDate(startOfWeek.getDate() + i);
                 currentDay.setHours(0, 0, 0, 0);
-
-                const occupiedRoomsToday = residents.filter(r => {
+                const occupiedRooms = residents.filter(r => {
                     const arrival = new Date(r.arrival);
                     const departure = new Date(r.departure);
                     arrival.setHours(0, 0, 0, 0);
                     departure.setHours(0, 0, 0, 0);
-                    return (arrival <= currentDay && departure >= currentDay);
+                    return arrival <= currentDay && departure >= currentDay;
                 }).length;
-                totalOccupiedDays += occupiedRoomsToday;
+                totalOccupied += occupiedRooms;
             }
-            // Calculate average daily occupancy for the month
-            activeResidentsCount = totalOccupiedDays / daysInMonth;
+        } else if (p === 'Mensuel') {
+            // Mois courant, 24 chambres
+            const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+            const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            const daysInMonth = endOfMonth.getDate();
+            totalPossible = daysInMonth * 24;
+            for (let day = 1; day <= daysInMonth; day++) {
+                const currentDay = new Date(today.getFullYear(), today.getMonth(), day);
+                currentDay.setHours(0, 0, 0, 0);
+                const occupiedRooms = residents.filter(r => {
+                    const arrival = new Date(r.arrival);
+                    const departure = new Date(r.departure);
+                    arrival.setHours(0, 0, 0, 0);
+                    departure.setHours(0, 0, 0, 0);
+                    return arrival <= currentDay && departure >= currentDay;
+                }).length;
+                totalOccupied += occupiedRooms;
+            }
         }
-
-        return (activeResidentsCount / totalRooms) * 100;
+        if (totalPossible === 0) return 0;
+        return (totalOccupied / totalPossible) * 100;
     };
 
     const getMonthlyOccupancyRate = (): number => {
@@ -77,9 +82,10 @@ const OccupancyCard: React.FC<OccupancyCardProps> = ({ residents }) => {
 
     const StatOccupationContent: React.FC<{period: Period, residents: Resident[]}> = ({ period, residents }) => {
         const occupancyValue = calculateOccupancyRate(period);
-        const color = occupancyValue === 100 ? 'text-[#16a34a]' : 'text-orange-600'; // Example color logic
+        const roundedValue = Math.ceil(occupancyValue);
+        const color = roundedValue === 100 ? 'text-[#16a34a]' : 'text-orange-600';
         return (
-            <p className={`text-xl sm:text-2xl font-bold ${color}`}>{occupancyValue.toFixed(0)}% <span className="text-xs sm:text-sm font-normal text-gray-500">{period}</span></p>
+            <p className={`text-xl sm:text-2xl font-bold ${color}`}>{roundedValue}% <span className="text-xs sm:text-sm font-normal text-gray-500">{period}</span></p>
         );
     };
 
