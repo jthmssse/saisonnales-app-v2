@@ -105,7 +105,7 @@ export default function Dashboard({ onSelectResident, residents, planningData, s
         <StatCard
           icon={Clock}
           title="GIR moyen"
-          content={<p className="text-2xl font-bold text-[#006561]">{
+          content={<p className="text-2xl font-bold text-[#16a34a]">{
             (() => {
               const girs = residents.map(r => {
                 const girValue = parseInt((r.gir || '').replace(/\D/g, ''));
@@ -120,7 +120,7 @@ export default function Dashboard({ onSelectResident, residents, planningData, s
           color="green"
         />
         <StatCard icon={Clock} title="Durée Moyenne Séjour" content={<p className="text-2xl font-bold text-[#006561]">21 jours</p>} color="green" />
-        <PeriodStatCard icon={ArrowRight} title="Arrivées" data={arrivals} color="green" colorClass="text-[#006561]" />
+        <PeriodStatCard icon={ArrowRight} title="Arrivées" data={arrivals} color="green" colorClass="text-[#16a34a]" />
         <PeriodStatCard icon={ArrowLeft} title="Départs" data={departures} color="orange" colorClass="text-orange-600" />
       </div>
 

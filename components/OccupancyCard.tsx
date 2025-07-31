@@ -77,7 +77,7 @@ const OccupancyCard: React.FC<OccupancyCardProps> = ({ residents }) => {
 
     const StatOccupationContent: React.FC<{period: Period, residents: Resident[]}> = ({ period, residents }) => {
         const occupancyValue = calculateOccupancyRate(period);
-        const color = occupancyValue === 100 ? 'text-[#006561]' : 'text-orange-600'; // Example color logic
+        const color = occupancyValue === 100 ? 'text-[#16a34a]' : 'text-orange-600'; // Example color logic
         return (
             <p className={`text-xl sm:text-2xl font-bold ${color}`}>{occupancyValue.toFixed(0)}% <span className="text-xs sm:text-sm font-normal text-gray-500">{period}</span></p>
         );

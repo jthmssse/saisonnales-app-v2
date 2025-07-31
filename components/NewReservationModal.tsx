@@ -205,6 +205,12 @@ const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClose, onSa
                             <FormInput label="Prénom" name="First Name" value={formData.firstName || ''} onChange={handleChange} placeholder="ex: Jean" isRequired error={errors.firstName} />
                             <FormInput label="Nom" name="Last Name" value={formData.lastName || ''} onChange={handleChange} placeholder="ex: Dupont" isRequired error={errors.lastName} />
                             <FormInput label="Adresse e-mail" name="Email" value={formData.Email || ''} onChange={handleChange} placeholder="ex: jean.dupont@email.fr" type="email" isRequired error={errors.Email} />
+                            <FormInput label="Date de naissance" name="birthDate" value={formData.birthDate || ''} onChange={handleChange} type="date" />
+                            {formData.birthDate && (
+                              <div className="flex items-center text-sm text-gray-700 mt-1">
+                                <span>Âge : {Math.floor((new Date().getTime() - new Date(formData.birthDate).getTime()) / (1000 * 60 * 60 * 24 * 365.25))} ans</span>
+                              </div>
+                            )}
                             <FormSelect label="GIR" name="gir" value={formData.gir || ''} onChange={handleChange} isRequired error={errors.gir}>
                                 <option value="">Sélectionner...</option>
                                 {/* Génère dynamiquement les options pour les GIR de 1 à 6 */}

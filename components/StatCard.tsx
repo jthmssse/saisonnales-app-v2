@@ -4,7 +4,7 @@ import { StatCardProps } from '../types';
 const StatCard: React.FC<StatCardProps> = ({ icon: Icon, title, content, color = "gray", titleAction }) => {
   const colorClasses = {
     blue: 'text-blue-500 bg-blue-50',
-    green: 'text-[#006561] bg-[#006561]/10',
+    green: 'text-[#16a34a] bg-[#16a34a]/10',
     purple: 'text-purple-500 bg-purple-50',
     orange: 'text-orange-500 bg-orange-50',
     red: 'text-red-500 bg-red-50',
