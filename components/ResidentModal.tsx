@@ -385,15 +385,6 @@ const ResidentModal: React.FC<ResidentModalProps> = ({ resident, onClose, onUpda
             <div className="flex justify-between items-center mb-3">
                 <h3 className="font-semibold text-gray-800 text-base flex items-center gap-2">
                     Documents
-                </h3>
-                <label className="flex items-center gap-1.5 text-sm bg-blue-50 text-blue-700 font-medium px-3 py-1.5 rounded-lg hover:bg-blue-100 transition-colors cursor-pointer">
-                    <span>Ajouter</span>
-                    <input type="file" className="hidden" onChange={handleAddDocument} />
-                </label>
-            </div>
-            <div className="space-y-2">
-                {(documents && documents.length > 0) ? (
-                    documents.map(doc => (
                         <div key={doc.id} className="flex items-center justify-between p-2 rounded-md hover:bg-gray-50 transition-colors">
                             <div className="flex items-center gap-3">
                                 <span className="font-medium text-sm text-gray-800">{doc.name}</span>
